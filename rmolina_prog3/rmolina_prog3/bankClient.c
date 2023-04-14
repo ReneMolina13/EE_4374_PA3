@@ -145,6 +145,9 @@ bool newTransaction()
 	else if (pid == 0)
 		execvp(args[0], args);
 	
+	// Parent frees pointer memory before exiting
+	free(args);
+	
 	return true;
 }
 
@@ -208,6 +211,7 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 	int numThreads = (rand() % 100) + 1;
 	tid = malloc(numThreads * sizeof(pthread_t));
+	pthread_attr_init(&attr);
 	for (int i = 0; i < numThreads; i++)
 		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
 
