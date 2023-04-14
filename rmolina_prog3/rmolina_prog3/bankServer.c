@@ -112,8 +112,8 @@ int main()
 	// Run forever
 	while (1) {
 		// Accept client connection
-		struct sockaddr_in clientAddy;
-		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddy, sizeof(struct sockaddr));
+		struct sockaddr_in clientAddr;
+		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddr, sizeof(struct sockaddr));
 		if (clientSocket < 0) {
 			puts("Unable to accept client connection");
 			break;
@@ -121,7 +121,7 @@ int main()
 		
 		// Receive request from client
 		sBANK_PROTOCOL clientRequest;
-		if (recv(clientSocket, clientRequest, sizeof(sBank_PROTOCOL), 0) < 0) {
+		if (recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 			puts("Unable to receive request from client");
 			break;
 		}
@@ -131,7 +131,7 @@ int main()
 			puts("Unable to complete transaction");
 		
 		// Confirm with client that request was completed
-		if (send(serverSocket, clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
+		if (send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 			puts("Unable to confirm completion of request to client");
 			break;
 		}
