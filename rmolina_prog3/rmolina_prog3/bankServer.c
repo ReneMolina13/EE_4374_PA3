@@ -98,7 +98,7 @@ int main()
 	serverAddr.sin_port = htons(26207);
 	
 	// Bind local address to socket
-	if (bind(serverSocket, (struct sockaddr *) serverAddr, sizeof(struct sockaddr)) < 0) {
+	if (bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(struct sockaddr)) < 0) {
 		fputs("Error binding local address to socket", stderr);
 		return -1;
 	}
