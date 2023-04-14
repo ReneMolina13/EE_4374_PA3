@@ -95,7 +95,7 @@ int main()
 	struct sockaddr_in serverAddr;
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = 0;	// Allows connection to any IP address
+	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);	// Allows connection to any IP address
 	serverAddr.sin_port = htons(26207);
 	
 	// Bind local address to socket
