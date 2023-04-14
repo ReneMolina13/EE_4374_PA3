@@ -32,6 +32,7 @@ void *serverThread(void *param)
 	bankRequest.value = rand();
 	
 	makeBankRequest(clientSocket);
+	pthread_exit(0);
 }
 
 bool connectToServer(connectionInfo &sockData)
