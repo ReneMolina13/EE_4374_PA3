@@ -39,7 +39,7 @@ void *serverThread(void *param)
 	randomRequest.acctnum = rand() % 100;
 	randomRequest.value = rand();
 	
-	makeBankRequest(clientSocket);
+	makeBankRequest(clientSocket, randomRequest);
 	pthread_exit(0);
 }
 
@@ -179,13 +179,13 @@ int main(int argc, char **argv)
 	}
 	
 	// Connect to bank server
-	if (connectToServer() == false) {
+	if (connectToServer(sockData) == false) {
 		fputs("Unable to connect to bank server", stderr);
 		return -1;
 	}
 	
 	// Make the transaction specified by the terminal arguments
-	if (makeBankRequest(sockData.clientSocket) == false) {
+	if (makeBankRequest(sockData.clientSocket, mainRequest) == false) {
 		fputs("Unable to make original transaction (from terminal arguments)", stderr);
 		return -1;
 	}
