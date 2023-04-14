@@ -108,24 +108,24 @@ bool newTransaction()
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	
 	// Fill command line argument array with info from user
-	args[0] = "bankClient";			// Filename
+	args[0] = "bankClient";						// Filename
 	argsAssigned++;
 	printf("IP address of the bank server: ");
-	argsAssigned += scanf("%20s", args[1]);			// IP Address
+	argsAssigned += scanf("%20s", args[1]);		// IP Address
 	printf("Port number of the bank server: ");
-	argsAssigned += scanf("%20s", args[2]);			// Port Number
-	sprintf(args[3], "%c", c);	// Transaction
-	argsAssigned += printf("Account number: ");
-	scanf("%20s", args[4]);			// Account Number
+	argsAssigned += scanf("%20s", args[2]);		// Port Number
+	sprintf(args[3], "%c", c);					// Transaction
+	printf("Account number: ");
+	argsAssigned += scanf("%20s", args[4]);		// Account Number
 	// Is value argument needed?
 	if (numArgs == 7) {
 		printf("Value of the transaction in pennies: ");
-		argsAssigned += scanf("%20s", args[5]);		// Transaction Value
-		args[6] = NULL;				// End of arguments list
+		argsAssigned += scanf("%20s", args[5]);	// Transaction Value
+		args[6] = NULL;							// End of arguments list
 		argsAssigned ++;
 	}
 	else {
-		args[5] = NULL;				// End of arguments list
+		args[5] = NULL;							// End of arguments list
 		argsAssigned++;
 	}
 	
