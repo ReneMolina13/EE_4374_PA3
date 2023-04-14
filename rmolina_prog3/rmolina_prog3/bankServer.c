@@ -3,6 +3,8 @@
 #include <pthread.h>	// pthreads library
 #include <signal.h>		// Signal handler library
 #include <time.h>		// srand function
+#include <string.h>		// memset function
+#include <stdbool.h>	// bool data type
 #include <sys/socket.h>	
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -22,7 +24,7 @@ typedef struct
 sBANK_ACCT_DATA acctData[NUM_ACCTS];
 
 // Processes transction requested by client
-_Bool processTransaction(sBANK_ACCT_DATA *request)
+bool processTransaction(sBANK_ACCT_DATA *request)
 {	
 	// Checks for a valid account number
 	if (request.acctnum < 0 || request.acctnum >= NUM_ACCTS) {
@@ -34,7 +36,7 @@ _Bool processTransaction(sBANK_ACCT_DATA *request)
 	pthread_mutex_lock(&acctData[request.acctnum].mutex);
 
 	// Check for valid request
-	_Bool success = true;
+	bool success = true;
 	switch(transaction) {
 	
 	// Deposit

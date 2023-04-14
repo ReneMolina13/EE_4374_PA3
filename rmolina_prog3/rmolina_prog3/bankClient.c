@@ -4,16 +4,18 @@
 #include <unistd.h>		// Unix system call library
 #include <signal.h>		// Signal handler library
 #include <time.h>		// srand function
+#include <string.h>		// memset function
+#include <stdbool.h>	// bool data type
 #include <sys/socket.h>	
 #include <arpa/inet.h>
 #include <netdb.h>
 #include "rmolina_banking.h"
 
 // Function prototypes
-void *serverThread(void *);
-_Bool connectToServer(connectionInfo *);
-_Bool makeBankRequest(int, sBANK_PROTOCOL *);
-_Bool newTransaction();
+void *serverThread(void *param);
+bool connectToServer(connectionInfo *sockData);
+bool makeBankRequest(int, sBANK_PROTOCOL *bankTransaction);
+bool newTransaction();
 
 typedef struct
 {
@@ -43,23 +45,23 @@ void *serverThread(void *param)
 	pthread_exit(0);
 }
 
-_Bool connectToServer(connectionInfo *sockData)
+bool connectToServer(connectionInfo *sockData)
 {
 	// Create TCP client socket
-	sockData.clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sockData.clientSocket < 0) {
+	sockData->clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (sockData->clientSocket < 0) {
 		puts("Error creating socket");
 		return false;
 	}
 	
 	// Initialize structure for address
-	memset(&sockData.serverAddr, 0, sizeof(sockData.serverAddr));
-	sockData.serverAddr.sin_family = AF_INET;
-	sockData.serverAddr.sin_addr.s_addr = inet_addr(sockData.cmdIP);
-	sockData.serverAddr.sin_port = htons(sockData.cmdPort);
+	memset(&sockData->serverAddr, 0, sizeof(sockData->serverAddr));
+	sockData->serverAddr.sin_family = AF_INET;
+	sockData->serverAddr.sin_addr.s_addr = inet_addr(sockData->cmdIP);
+	sockData->serverAddr.sin_port = htons(sockData->cmdPort);
 	
 	// Connect to server
-	if (connect(sockData.clientSocket, (struct sockaddr *) sockData.serverAddr, sizeof(struct sockaddr)) < 0) {
+	if (connect(sockData->clientSocket, (struct sockaddr *) sockData->serverAddr, sizeof(struct sockaddr)) < 0) {
 		puts("Unable to connect to server");
 		return false;
 	}
@@ -67,16 +69,16 @@ _Bool connectToServer(connectionInfo *sockData)
 	return true;
 }
 
-_Bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
+bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 {
 	// Send the requested transaction to the server
-	if (send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL)) < 0) {
+	if (send(clientSocket, *bankTransaction, sizeof(sBANK_PROTOCOL)) < 0) {
 		puts("Unable to send request");
 		return false;
 	}
 	
 	// Receive the response from the server
-	if (recv(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0) < 0) {
+	if (recv(clientSocket, *bankTransaction, sizeof(sBANK_PROTOCOL), 0) < 0) {
 		puts("Failed to get response from server");
 		return false;
 	}
@@ -84,10 +86,10 @@ _Bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 	return true;
 }
 
-_Bool newTransaction()
+bool newTransaction()
 {
 	// Ask if user wants to request another transaction
-	printf("\nWould you like to make another transaction? (y/n) ";
+	printf("\nWould you like to make another transaction? (y/n) ");
 	char c = getchar();
 	if (c != 'y' && c != 'Y')
 		return true;
