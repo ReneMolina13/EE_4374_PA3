@@ -105,24 +105,35 @@ bool newTransaction()
 	else
 		numArgs = 7;
 	char **args = (char **) calloc(numArgs, sizeof(char[20]));
+	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	
 	// Fill command line argument array with info from user
 	args[0] = "bankClient";			// Filename
+	argsAssigned++;
 	printf("IP address of the bank server: ");
-	scanf("%20s", args[1]);			// IP Address
+	argsAssigned += scanf("%20s", args[1]);			// IP Address
 	printf("Port number of the bank server: ");
-	scanf("%20s", args[2]);			// Port Number
+	argsAssigned += scanf("%20s", args[2]);			// Port Number
 	sprintf(args[3], "%c", c);	// Transaction
-	printf("Account number: ");
+	argsAssigned += printf("Account number: ");
 	scanf("%20s", args[4]);			// Account Number
 	// Is value argument needed?
 	if (numArgs == 7) {
 		printf("Value of the transaction in pennies: ");
-		scanf("%20s", args[5]);		// Transaction Value
+		argsAssigned += scanf("%20s", args[5]);		// Transaction Value
 		args[6] = NULL;				// End of arguments list
+		argsAssigned ++;
 	}
-	else
+	else {
 		args[5] = NULL;				// End of arguments list
+		argsAssigned++;
+	}
+	
+	// Check to make sure all arguments successfully assigned
+	if (argsAssigned != numArgs) {
+		fputs("Error assigning command line arguments", stderr);
+		return false;
+	}
 	
 	// Fork process & call this program from command line
 	pid_t pid = fork();
