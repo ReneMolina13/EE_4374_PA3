@@ -11,9 +11,9 @@
 
 // Function prototypes
 void *serverThread(void *);
-bool connectToServer();
-bool makeBankRequest(int);
-bool newTransaction();
+_bool connectToServer();
+_bool makeBankRequest(int);
+_bool newTransaction();
 
 typedef struct
 {
@@ -43,7 +43,7 @@ void *serverThread(void *param)
 	pthread_exit(0);
 }
 
-bool connectToServer(connectionInfo &sockData)
+_bool connectToServer(connectionInfo &sockData)
 {
 	// Create TCP client socket
 	sockData.clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -67,7 +67,7 @@ bool connectToServer(connectionInfo &sockData)
 	return true;
 }
 
-bool makeBankRequest(int clientSocket)
+_bool makeBankRequest(int clientSocket)
 {
 	// Send the requested transaction to the server
 	if (send(clientSocket, bankRequest, sizeof(sBANK_PROTOCOL)) < 0) {
@@ -85,7 +85,7 @@ bool makeBankRequest(int clientSocket)
 	return true;
 }
 
-bool newTransaction()
+_bool newTransaction()
 {
 	// Ask if user wants to request another transaction
 	printf("\nWould you like to make another transaction? (y/n) ";
