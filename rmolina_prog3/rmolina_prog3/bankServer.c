@@ -22,7 +22,7 @@ typedef struct
 sBANK_ACCT_DATA acctData[NUM_ACCTS];
 
 // Processes transction requested by client
-_bool processTransaction(sBANK_ACCT_DATA &request)
+_Bool processTransaction(sBANK_ACCT_DATA &request)
 {	
 	// Checks for a valid account number
 	if (request.acctnum < 0 || request.acctnum >= NUM_ACCTS) {
@@ -34,7 +34,7 @@ _bool processTransaction(sBANK_ACCT_DATA &request)
 	pthread_mutex_lock(&acctData[request.acctnum].mutex);
 
 	// Check for valid request
-	_bool success = true;
+	_Bool success = true;
 	switch(transaction) {
 	
 	// Deposit
