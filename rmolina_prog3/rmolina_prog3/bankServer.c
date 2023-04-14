@@ -37,7 +37,7 @@ bool processTransaction(sBANK_ACCT_DATA *request)
 
 	// Check for valid request
 	bool success = true;
-	switch(transaction) {
+	switch(request.trans) {
 	
 	// Deposit
 	case BANK_TRANS_DEPOSIT:
@@ -74,7 +74,7 @@ bool processTransaction(sBANK_ACCT_DATA *request)
 int main()
 {
 	// Initialize bank
-	srant(time(NULL));
+	srand(time(NULL));
 	for (int i = 0; i < NUM_ACCTS; i++) {
 		// Set account balances to random values
 		acctData[i].balance = rand();
@@ -85,7 +85,7 @@ int main()
 	
 	// Create TCP server socket
 	int serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (serverSocket < 0 {
+	if (serverSocket < 0) {
 		fputs("Error creating socket", stderr);
 		return -1;
 	}
