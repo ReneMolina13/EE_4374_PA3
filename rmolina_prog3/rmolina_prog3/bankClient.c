@@ -29,9 +29,9 @@ void *serverThread(void *param)
 	
 	// Initialize bank protocol structure
 	sBANK_PROTOCOL randomRequest;
-	bankRequest.trans = rand() % 3;
-	bankRequest.acctnum = rand() % 100;
-	bankRequest.value = rand();
+	randomRequest.trans = rand() % 3;
+	randomRequest.acctnum = rand() % 100;
+	randomRequest.value = rand();
 	
 	makeBankRequest(clientSocket);
 	pthread_exit(0);
