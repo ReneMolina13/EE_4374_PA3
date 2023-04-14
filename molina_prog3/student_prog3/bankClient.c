@@ -1,67 +1,211 @@
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/socket.h>
+#include <stdio.h>		// Standard I/O library
+#include <stdlib.h>		// Standard library: atoi(), malloc
+#include <pthreads.h>	// pthreads library
+#include <signal.h>		// Signal handler library
+#include <time.h>		// srand function
+#include <sys/socket.h>	
 #include <arpa/inet.h>
-#include "banking.h"
+#include <netdb.h>
+#include "rmolina_banking.h"
 
-int setupTCPClient(char *servIPAddr, unsigned int portNum)
+typedef struct
 {
-    int clientSocket;
-    struct sockaddr_in servAddr;
+	char *cmdIP;
+	unsigned int cmdPort;
+	int clientSocket;
+	struct sockaddr_in serverAddr;
+} connectionInfo;
 
-    /* Setup address of server */
-    memset(&servAddr, 0, sizeof(servAddr));
-    servAddr.sin_family = AF_INET;
-    servAddr.sin_addr.s_addr = inet_addr(servIPAddr);
-    servAddr.sin_port = htons(portNum);
+// pthread attributes
+pthread_attr_t attr;
+// array of threads
+pthread_t *tid;
 
-    /* Create socket */
-    if((clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-    {
-        printf("Failed to create socket; Error %d: %s\n", errno, strerror(errno));
-        return -1;
-    }
-
-    /* Connect socket to server */
-    if(connect(clientSocket,(struct sockaddr *) &servAddr,sizeof(servAddr)) < 0)
-    {
-        printf("Failed to connect socket to %s:%d; Error %d: %s\n", servIPAddr, portNum, errno, strerror(errno));
-        return -1;
-    }
-
-    return clientSocket;
+void *serverThread(void *param)
+{
+	int clientSocket = (int) param;
+	
+	// Initialize bank protocol structure
+	sBANK_PROTOCOL randomRequest;
+	bankRequest.trans = rand() % 3;
+	bankRequest.acctnum = rand() % 100;
+	bankRequest.value = rand();
+	
+	makeBankRequest(clientSocket);
 }
 
-int main(int argc, char **argv)
+bool connectToServer(connectionInfo &sockData)
 {
-    int mySocket;
-    char serverIP[15];
-    unsigned int portNum;
-
-    if(argc != 6)
-    {
-        printf("Usage: bankClient servIPAddr servPortNum command acctNum value\n");
-        return -1;
-    }
-
-	/* Setup the IP address */
-	strcpy(serverIP, argv[1]);
+	// Create TCP client socket
+	sockData.clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (sockData.clientSocket < 0) {
+		puts("Error creating socket");
+		return false;
+	}
 	
-	/* Setup TCP port number */
-	portNum = atoi(argv[2]);
+	// Initialize structure for address
+	memset(&sockData.serverAddr, 0, sizeof(sockData.serverAddr));
+	sockData.serverAddr.sin_family = AF_INET;
+	sockData.serverAddr.sin_addr.s_addr = inet_addr(sockData.cmdIP);
+	sockData.serverAddr.sin_port = htons(sockData.cmdPort);
+	
+	// Connect to server
+	if (connect(sockData.clientSocket, (struct sockaddr *) sockData.serverAddr, sizeof(struct sockaddr)) < 0) {
+		puts("Unable to connect to server");
+		return false;
+	}
+	
+	return true;
+}
 
-    /* Setup the client socket */
-    if((mySocket = setupTCPClient(serverIP, portNum)) < 0)
-    {
-        return -1;
-    }
+bool makeBankRequest(int clientSocket)
+{
+	// Send the requested transaction to the server
+	if (send(clientSocket, bankRequest, sizeof(sBANK_PROTOCOL)) < 0) {
+		puts("Unable to send request");
+		return false;
+	}
+	
+	// Receive the response from the server
+	sBANK_PROTOCOL bankReceipt;
+	if (recv(clientSocket, bankReceipt, sizeof(sBANK_PROTOCOL), 0) < 0) {
+		puts("Failed to get response from server");
+		return false;
+	}
+	
+	return true;
+}
+
+bool newTransaction()
+{
+	// Ask if user wants to request another transaction
+	printf("\nWould you like to make another transaction? (y/n) ";
+	char c = getchar();
+	if (c != 'y' && c != 'Y')
+		return true;
+	
+	// Ask user for transaction type (to determine if value argument is needed)
+	printf("\nEnter in new transaction for bank server\n");
+	printf("Transaction (B = balance inquiry, D = deposit, W = withdraw): ");
+	int numArgs;
+	c = getchar();
+	if (c == 'B' || c == 'b')
+		numArgs = 6;
+	else
+		numArgs = 7;
+	char *args[] = calloc(numArgs, sizeof(char[20]);
+	
+	// Fill command line argument array with info from user
+	args[0] = "bankClient";			// Filename
+	printf("IP address of the bank server: ");
+	scanf("%20s", args[1]);			// IP Address
+	printf("Port number of the bank server: ");
+	scanf("%20s", args[2]);			// Port Number
+	sprintf(args[3], "%c\0", c);	// Transaction
+	printf("Account number: ");
+	scanf("%20s", args[4]);			// Account Number
+	// Is value argument needed?
+	if (numArgs == 7) {
+		printf("Value of the transaction in pennies: ");
+		scanf("%20s", args[5]);		// Transaction Value
+		args[6] = NULL;				// End of arguments list
+	}
+	else
+		args[5] = NULL;				// End of arguments list
+	
+	// Fork process & call this program from command line
+	pid_t pid = fork();
+	if (pid < 0) {
+		fputs("Error forking process", stderr);
+		return false;
+	}
+	// Child process: Arguments are new transaction specified by user
+	else if (pid == 0)
+		execvp(args[0], args);
+	
+	return true;
+}
 
 
+int main(int argc, char **argv)
+{	
+	// Check for correct number of arguments
+	if (argc < 5 && argc > 6) {
+		fputs("Not enough arguments entered:", stderr);
+		fputs("1st argument should be IP address of the bank server", stderr);
+		fputs("2nd argument should be port number of the bank server", stderr);
+		fputs("3rd argument should be transaction: ", stderr);
+		fputs("B = balance inquiry, D = deposit, W = withdraw", stderr);
+		fputs("4th argument should be the account number", stderr);
+		fputs("5th argument should be value of deposit or withdraw in pennies", stderr);
+		return -1;
+	}
+	
+	// Extract command line arguemnts into appropriate structures
+	connectionInfo sockData;
+	sockData.cmdIP = *(argv + 1);
+	sockData.cmdPort = atoi(*(argv + 2));
+	sBANK_PROTOCOL mainRequest;
+	switch(**(argv + 3)) {
+	case 'B':
+	case 'b':
+		mainRequest.trans = BANK_TRANS_INQUIRY;
+		mainRequest.acctnum = atoi(*(argv + 4));
+		mainRequest.value = 0;
+		break;
+	case 'D':
+	case 'd':
+		mainRequest.trans = BANK_TRANS_DEPOSIT;
+		mainRequest.acctnum = atoi(*(argv + 4));
+		mainRequest.value = atoi(*(argv + 5));
+		break;
+	case 'W':
+	case 'w':
+		mainRequest.trans = BANK_TRANS_WITHDRAW;
+		mainRequest.acctnum = atoi(*(argv + 4));
+		mainRequest.value = atoi(*(argv + 5));
+		break;
+	default:
+		fputs("Invalid transaction", stderr);
+		return -1;
+	}
+	
+	// Connect to bank server
+	if (connectToServer() == false) {
+		fputs("Unable to connect to bank server", stderr);
+		return -1;
+	}
+	
+	// Make the transaction specified by the terminal arguments
+	if (makeBankRequest(sockData.clientSocket) == false) {
+		fputs("Unable to make original transaction (from terminal arguments)", stderr);
+		return -1;
+	}
+	
+	// Create between 0 and 100 threads to make random bank server requests
+	srand(time(NULL));
+	int numThreads = (rand() % 100) + 1;
+	tid = malloc(numThreads * sizeof(pthread_t));
+	for (int i = 0; i < numThreads; i++)
+		pthread_create(tid+i, &attr, serverThread, (void *) sockData.clientSocket);
 
-
-
-
-
-    close(mySocket);
+	// Wait for all threads to terminate
+	for (int i = 0; i < numThreads; i++)
+		pthread_join(*(tid+i), NULL);
+	free(tid);
+	
+	// Close client socket
+	if (close(clientSocket) < 0) {
+		fputs("Failed to properly close client socket", stderr);
+		return -1;
+	}
+	
+	// Ask user for next bank server transaction
+	if (newTransaction() == false) {
+		fputs("Unable to make requested transaction", stderr);
+		return -1;
+	}
+	
+	// End process without waiting for child
+	return 0;
 }
