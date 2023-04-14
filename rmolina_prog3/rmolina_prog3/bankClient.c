@@ -112,7 +112,7 @@ bool newTransaction()
 	scanf("%20s", args[1]);			// IP Address
 	printf("Port number of the bank server: ");
 	scanf("%20s", args[2]);			// Port Number
-	sprintf(args[3], "%c\0", c);	// Transaction
+	sprintf(args[3], "%c", c);	// Transaction
 	printf("Account number: ");
 	scanf("%20s", args[4]);			// Account Number
 	// Is value argument needed?
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 	int numThreads = (rand() % 100) + 1;
 	tid = malloc(numThreads * sizeof(pthread_t));
 	for (int i = 0; i < numThreads; i++)
-		pthread_create(tid+i, &attr, serverThread, (void *) sockData.clientSocket);
+		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
 
 	// Wait for all threads to terminate
 	for (int i = 0; i < numThreads; i++)
