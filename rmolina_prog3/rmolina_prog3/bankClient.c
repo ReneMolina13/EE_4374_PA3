@@ -61,7 +61,7 @@ bool connectToServer(connectionInfo *sockData)
 	sockData->serverAddr.sin_port = htons(sockData->cmdPort);
 	
 	// Connect to server
-	if (connect(sockData->clientSocket, (struct sockaddr *) sockData->serverAddr, sizeof(struct sockaddr)) < 0) {
+	if (connect(sockData->clientSocket, (struct sockaddr *) &(sockData->serverAddr), sizeof(struct sockaddr)) < 0) {
 		puts("Unable to connect to server");
 		return false;
 	}

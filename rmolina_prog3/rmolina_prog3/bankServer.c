@@ -24,7 +24,7 @@ typedef struct
 sBANK_ACCT_DATA acctData[NUM_ACCTS];
 
 // Processes transction requested by client
-bool processTransaction(sBANK_ACCT_DATA *request)
+bool processTransaction(sBANK_PROTOCOL *request)
 {	
 	// Checks for a valid account number
 	if (request->acctnum < 0 || request->acctnum >= NUM_ACCTS) {
