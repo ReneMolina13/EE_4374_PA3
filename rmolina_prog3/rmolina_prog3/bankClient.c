@@ -67,17 +67,16 @@ _Bool connectToServer(connectionInfo &sockData)
 	return true;
 }
 
-_Bool makeBankRequest(int clientSocket)
+_Bool makeBankRequest(int clientSocket, &sBANK_PROTOCOL bankTransaction)
 {
 	// Send the requested transaction to the server
-	if (send(clientSocket, bankRequest, sizeof(sBANK_PROTOCOL)) < 0) {
+	if (send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL)) < 0) {
 		puts("Unable to send request");
 		return false;
 	}
 	
 	// Receive the response from the server
-	sBANK_PROTOCOL bankReceipt;
-	if (recv(clientSocket, bankReceipt, sizeof(sBANK_PROTOCOL), 0) < 0) {
+	if (recv(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0) < 0) {
 		puts("Failed to get response from server");
 		return false;
 	}
