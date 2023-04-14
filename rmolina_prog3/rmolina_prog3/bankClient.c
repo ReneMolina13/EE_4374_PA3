@@ -9,6 +9,12 @@
 #include <netdb.h>
 #include "rmolina_banking.h"
 
+// Function prototypes
+void *serverThread(void *);
+bool connectToServer();
+bool makeBankRequest(int);
+bool newTransaction();
+
 typedef struct
 {
 	char *cmdIP;
