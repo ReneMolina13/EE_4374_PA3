@@ -24,7 +24,8 @@ pthread_t *tid;
 
 void *serverThread(void *param)
 {
-	int clientSocket = (int) param;
+	int *parameter = (int *) param;
+	int clientSocket = *parameter;
 	
 	// Initialize bank protocol structure
 	sBANK_PROTOCOL randomRequest;
