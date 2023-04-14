@@ -1,6 +1,6 @@
 #include <stdio.h>		// Standard I/O library
 #include <stdlib.h>		// Standard library: atoi(), malloc
-#include <pthreads.h>	// pthreads library
+#include <pthread.h>	// pthreads library
 #include <signal.h>		// Signal handler library
 #include <time.h>		// srand function
 #include <sys/socket.h>	
