@@ -11,8 +11,8 @@
 
 // Function prototypes
 void *serverThread(void *);
-_Bool connectToServer();
-_Bool makeBankRequest(int);
+_Bool connectToServer(connectionInfo &);
+_Bool makeBankRequest(int, sBANK_PROTOCOL &);
 _Bool newTransaction();
 
 typedef struct
@@ -67,7 +67,7 @@ _Bool connectToServer(connectionInfo &sockData)
 	return true;
 }
 
-_Bool makeBankRequest(int clientSocket, &sBANK_PROTOCOL bankTransaction)
+_Bool makeBankRequest(int clientSocket, sBANK_PROTOCOL &bankTransaction)
 {
 	// Send the requested transaction to the server
 	if (send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL)) < 0) {
