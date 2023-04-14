@@ -11,8 +11,8 @@
 
 // Function prototypes
 void *serverThread(void *);
-_Bool connectToServer(connectionInfo &);
-_Bool makeBankRequest(int, sBANK_PROTOCOL &);
+_Bool connectToServer(connectionInfo *);
+_Bool makeBankRequest(int, sBANK_PROTOCOL *);
 _Bool newTransaction();
 
 typedef struct
@@ -39,11 +39,11 @@ void *serverThread(void *param)
 	randomRequest.acctnum = rand() % 100;
 	randomRequest.value = rand();
 	
-	makeBankRequest(clientSocket, randomRequest);
+	makeBankRequest(clientSocket, &randomRequest);
 	pthread_exit(0);
 }
 
-_Bool connectToServer(connectionInfo &sockData)
+_Bool connectToServer(connectionInfo *sockData)
 {
 	// Create TCP client socket
 	sockData.clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -67,7 +67,7 @@ _Bool connectToServer(connectionInfo &sockData)
 	return true;
 }
 
-_Bool makeBankRequest(int clientSocket, sBANK_PROTOCOL &bankTransaction)
+_Bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 {
 	// Send the requested transaction to the server
 	if (send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL)) < 0) {
@@ -179,13 +179,13 @@ int main(int argc, char **argv)
 	}
 	
 	// Connect to bank server
-	if (connectToServer(sockData) == false) {
+	if (connectToServer(&sockData) == false) {
 		fputs("Unable to connect to bank server", stderr);
 		return -1;
 	}
 	
 	// Make the transaction specified by the terminal arguments
-	if (makeBankRequest(sockData.clientSocket, mainRequest) == false) {
+	if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
 		fputs("Unable to make original transaction (from terminal arguments)", stderr);
 		return -1;
 	}
