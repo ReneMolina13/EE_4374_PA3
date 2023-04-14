@@ -103,7 +103,7 @@ bool newTransaction()
 		numArgs = 6;
 	else
 		numArgs = 7;
-	char *args[] = calloc(numArgs, sizeof(char[20]));
+	char *args[] = (char **) calloc(numArgs, sizeof(char[20]));
 	
 	// Fill command line argument array with info from user
 	args[0] = "bankClient";			// Filename
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 	free(tid);
 	
 	// Close client socket
-	if (close(clientSocket) < 0) {
+	if (close(sockData.clientSocket) < 0) {
 		fputs("Failed to properly close client socket", stderr);
 		return -1;
 	}

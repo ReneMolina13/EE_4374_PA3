@@ -92,7 +92,7 @@ int main()
 
 	// Initialize address structure
 	struct sockaddr_in serverAddy;
-	memset(&serverAddy, 0, sizeof(struct sockaddr_in);
+	memset(&serverAddy, 0, sizeof(struct sockaddr_in));
 	serverAddy.sin_family = AF_INET;
 	serverAddy.sin_addr.s_addr = 0;	// Allows connection to any IP address
 	serverAddy.sin_port = htons(26207);
