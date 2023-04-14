@@ -113,7 +113,8 @@ int main()
 	while (1) {
 		// Accept client connection
 		struct sockaddr_in clientAddr;
-		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddr, &sizeof(clientAddr));
+		socklen_t clientAddrLength = sizeof(clientAddr);
+		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddr, &clientAddrLength);
 		if (clientSocket < 0) {
 			puts("Unable to accept client connection");
 			break;
