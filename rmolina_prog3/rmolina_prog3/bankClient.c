@@ -11,12 +11,7 @@
 #include <netdb.h>
 #include "rmolina_banking.h"
 
-// Function prototypes
-void *serverThread(void *param);
-bool connectToServer(connectionInfo *sockData);
-bool makeBankRequest(int, sBANK_PROTOCOL *bankTransaction);
-bool newTransaction();
-
+// Structure holding connection info (from cmd line & necessary structures)
 typedef struct
 {
 	char *cmdIP;
@@ -24,6 +19,12 @@ typedef struct
 	int clientSocket;
 	struct sockaddr_in serverAddr;
 } connectionInfo;
+
+// Function prototypes
+void *serverThread(void *param);
+bool connectToServer(connectionInfo *sockData);
+bool makeBankRequest(int, sBANK_PROTOCOL *bankTransaction);
+bool newTransaction();
 
 // pthread attributes
 pthread_attr_t attr;
