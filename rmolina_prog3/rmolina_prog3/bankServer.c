@@ -27,38 +27,38 @@ sBANK_ACCT_DATA acctData[NUM_ACCTS];
 bool processTransaction(sBANK_ACCT_DATA *request)
 {	
 	// Checks for a valid account number
-	if (request.acctnum < 0 || request.acctnum >= NUM_ACCTS) {
+	if (request->acctnum < 0 || request->acctnum >= NUM_ACCTS) {
 		puts("Invalid account number");
 		return false;
 	}
 	
 	// Use mutex to prevent race conditions
-	pthread_mutex_lock(&acctData[request.acctnum].mutex);
+	pthread_mutex_lock(&acctData[request->acctnum].mutex);
 
 	// Check for valid request
 	bool success = true;
-	switch(request.trans) {
+	switch(request->trans) {
 	
 	// Deposit
 	case BANK_TRANS_DEPOSIT:
-		acctData[request.acctnum].balance += request.value;
+		acctData[request->acctnum].balance += request->value;
 		break;
 	
 	// Withdraw
 	case BANK_TRANS_WITHDRAW:
 		// Check for sufficient funds
-		if (acctData[request.acctnum].balance < request.value) {
+		if (acctData[request->acctnum].balance < request->value) {
 			puts("Insufficient Funds");
-			request.value = 0;
+			request->value = 0;
 			success = false;
 		}
 		else 
-			acctData[request.acctnum].balance -= request.value;
+			acctData[request->acctnum].balance -= request->value;
 		break;
 		
 	// Show account balance
 	case BANK_TRANS_INQUIRY:
-		request.value = acctData[request.acctnum].balance;
+		request->value = acctData[request->acctnum].balance;
 		break;
 		
 	default:
@@ -67,7 +67,7 @@ bool processTransaction(sBANK_ACCT_DATA *request)
 	}
 	
 	// Unlock mutex and return whether transaction was successful
-	pthread_mutex_unlock(&acctData[request.acctnum].mutex);
+	pthread_mutex_unlock(&acctData[request->acctnum].mutex);
 	return success;
 }
 
@@ -91,14 +91,14 @@ int main()
 	}
 
 	// Initialize address structure
-	struct sockaddr_in serverAddy;
-	memset(&serverAddy, 0, sizeof(struct sockaddr_in));
-	serverAddy.sin_family = AF_INET;
-	serverAddy.sin_addr.s_addr = 0;	// Allows connection to any IP address
-	serverAddy.sin_port = htons(26207);
+	struct sockaddr_in serverAddr;
+	memset(&serverAddr, 0, sizeof(serverAddr));
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_addr.s_addr = 0;	// Allows connection to any IP address
+	serverAddr.sin_port = htons(26207);
 	
 	// Bind local address to socket
-	if (bind(serverSocket, (struct sockaddr *) serverAddy, sizeof(struct sockaddr)) < 0) {
+	if (bind(serverSocket, (struct sockaddr *) serverAddr, sizeof(struct sockaddr)) < 0) {
 		fputs("Error binding local address to socket", stderr);
 		return -1;
 	}
