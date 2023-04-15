@@ -118,7 +118,7 @@ int main()
 	puts("TCP socket bound to address");
 	printf("Server family value: %i\n", serverAddr.sin_family);
 	printf("Server IP value: %i\n", serverAddr.sin_addr.s_addr);
-	printf("Server port value: %i\n\n", serverAddr.sin_port);
+	printf("Server port value: %i\n\n", ntohs(serverAddr.sin_port));
 	
 	
 	
