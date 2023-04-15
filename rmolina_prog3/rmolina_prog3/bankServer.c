@@ -101,10 +101,8 @@ int main()
 	
 	
 	// TESTING
+	puts("TCP socket created:");
 	printf("Socket value: %i\n", serverSocket);
-	printf("Server Family value: %i\n", serverAddr.sin_family);
-	printf("Server IP value: %i\n", serverAddr.sin_addr.s_addr);
-	printf("Server Port value: %i\n", serverAddr.sin_port);
 	
 	
 	
@@ -114,11 +112,28 @@ int main()
 		return -1;
 	}
 	
+	
+	
+	// TESTING
+	puts("TCP socket bound to address");
+	printf("Server family value: %i\n", serverAddr.sin_family);
+	printf("Server IP value: %i\n", serverAddr.sin_addr.s_addr);
+	printf("Server port value: %i\n", serverAddr.sin_port);
+	
+	
+	
 	// Have server listen for bank customers
 	if (listen(serverSocket, NUM_ACCTS) < 0) {
 		fputs("Server unable to listen for traffic - ", stderr);
 		return -1;
 	}
+	
+	
+	
+	// TESTING
+	puts("Server is now listening for incoming connections");
+	
+	
 	
 	// Run forever
 	while (1) {
@@ -131,6 +146,17 @@ int main()
 			break;
 		}
 		
+		
+		
+		// TESTING
+		puts("Server accepted connection request:");
+		printf("Client socket value: %i\n", clientSocket);
+		printf("Client family value: %i\n", clientAddr.sin_family);
+		printf("Client IP value: %i\n", clientAddr.sin_addr.s_addr);
+		printf("Client port value: %i\n", clientAddr.sin_port);
+		
+		
+		
 		// Receive request from client
 		sBANK_PROTOCOL clientRequest;
 		if (recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
@@ -138,15 +164,44 @@ int main()
 			break;
 		}
 		
+		
+		
+		// TESTING
+		puts("Received request from client");
+		printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
+		printf("Account number: %i\n", clientRequest.acctnum);
+		printf("Value of transaction: %i\n", clientRequest.value);
+		
+		
+		
 		// Perform requested transaction 
 		if (processTransaction(&clientRequest) == false)
 			puts("Unable to complete transaction");
+		
+		
+		
+		// TESTING
+		puts("Transaction Completed");
+		puts("Receipt for client: ");
+		printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
+		printf("Account number: %i\n", clientRequest.acctnum);
+		printf("Value of transaction: %i\n", clientRequest.value);
+		
+		
 		
 		// Confirm with client that request was completed
 		if (send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 			puts("Unable to confirm completion of request to client");
 			break;
 		}
+		
+		
+		
+		// TESTING
+		puts("Receipt received by client");
+		
+		
+		
 	}
 		
 	// Close server socket
