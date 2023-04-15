@@ -213,6 +213,13 @@ int main()
 		return -1;
 	}
 	
+	
+	
+	// TESTING
+	puts("Successfully closed server socket\n");
+	
+	
+	
 	// Exit program
 	return 0;
 }
