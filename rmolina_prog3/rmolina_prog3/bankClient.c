@@ -154,6 +154,9 @@ bool newTransaction()
 
 int main(int argc, char **argv)
 {	
+	puts("Entered Main");
+
+
 	// Check for correct number of arguments
 	if (argc < 5 && argc > 6) {
 		fputs("Not enough arguments entered:\n", stderr);
