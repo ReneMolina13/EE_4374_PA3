@@ -101,10 +101,10 @@ int main()
 	
 	
 	// TESTING
-	printf("Socket value: %i", serverSocket);
-	printf("Server Family value: %i", serverAddr.sin_family);
-	printf("Server IP value: %i", serverAddr.sin_addr.s_addr);
-	printf("Server Port value: %i", serverAddr.sin_port);
+	printf("Socket value: %i\n", serverSocket);
+	printf("Server Family value: %i\n", serverAddr.sin_family);
+	printf("Server IP value: %i\n", serverAddr.sin_addr.s_addr);
+	printf("Server Port value: %i\n", serverAddr.sin_port);
 	
 	
 	
