@@ -179,7 +179,7 @@ int main()
 		
 		// Perform requested transaction 
 		if (processTransaction(&clientRequest) == false)
-			puts("Unable to complete transaction");
+			puts("Unable to complete transaction\n");
 		
 		
 		
