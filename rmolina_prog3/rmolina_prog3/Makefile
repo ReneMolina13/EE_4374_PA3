@@ -3,7 +3,7 @@ CLTOBJ= bankClient.o
 SRVOBJ= bankServer.o
 
 # set compiler flags (debug and optimization)
-CFLAGS=-g -O3
+CFLAGS=-g -O3 -lpthread
 
 # first target is built by default
 all: bankClient bankServer
