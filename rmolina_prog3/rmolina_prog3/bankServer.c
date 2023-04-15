@@ -155,7 +155,7 @@ int main()
 		puts("Server accepted connection request:");
 		printf("Client socket value: %i\n", clientSocket);
 		printf("Client family value: %i\n", clientAddr.sin_family);
-		printf("Client IP value: %i\n", clientName);
+		printf("Client IP value: %s\n", clientName);
 		printf("Client port value: %i\n\n", ntohs(clientAddr.sin_port));
 		
 		
