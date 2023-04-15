@@ -144,7 +144,7 @@ int main()
 		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddr, &clientAddrLength);
 		if (clientSocket < 0) {
 			puts("Unable to accept client connection");
-			break;
+			return -1;
 		}
 		inet_ntop(AF_INET, &clientAddr.sin_addr.s_addr, clientName, sizeof(clientName));
 			
@@ -164,7 +164,7 @@ int main()
 		sBANK_PROTOCOL clientRequest;
 		if (recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 			puts("Unable to receive request from client");
-			break;
+			return -1;
 		}
 		
 		
@@ -195,7 +195,7 @@ int main()
 		// Confirm with client that request was completed
 		if (send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 			puts("Unable to confirm completion of request to client");
-			break;
+			return -1;
 		}
 		
 		
