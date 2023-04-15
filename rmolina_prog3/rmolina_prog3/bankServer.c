@@ -98,6 +98,16 @@ int main()
 	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);	// Allows connection to any IP address
 	serverAddr.sin_port = htons(26207);
 	
+	
+	
+	// TESTING
+	printf("Socket value: %i", serverSocket);
+	printf("Server Family value: %i", serverAddr.sin_family);
+	printf("Server IP value: %i", serverAddr.sin_addr.s_addr);
+	printf("Server Port value: %i", serverAddr.sin_port);
+	
+	
+	
 	// Bind local address to socket
 	if (bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(struct sockaddr)) < 0) {
 		fputs("Error binding local address to socket - ", stderr);
