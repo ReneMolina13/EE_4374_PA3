@@ -23,9 +23,6 @@ bankServer: $(SRVOBJ)
 clean:
 	rm -f *.o bankClient bankServer
 
-# runs the program
-runClient:bankClient
-	./bankClient
-	
+# runs the server program
 runServer:bankServer
 	./bankServer
