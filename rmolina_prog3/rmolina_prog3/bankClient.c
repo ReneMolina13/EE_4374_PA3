@@ -131,14 +131,14 @@ bool newTransaction()
 	
 	// Check to make sure all arguments successfully assigned
 	if (argsAssigned != numArgs) {
-		fputs("Error assigning command line arguments", stderr);
+		fputs("Error assigning command line arguments - ", stderr);
 		return false;
 	}
 	
 	// Fork process & call this program from command line
 	pid_t pid = fork();
 	if (pid < 0) {
-		fputs("Error forking process", stderr);
+		fputs("Error forking process - ", stderr);
 		return false;
 	}
 	// Child process: Arguments are new transaction specified by user
@@ -156,13 +156,13 @@ int main(int argc, char **argv)
 {	
 	// Check for correct number of arguments
 	if (argc < 5 && argc > 6) {
-		fputs("Not enough arguments entered:", stderr);
-		fputs("1st argument should be IP address of the bank server", stderr);
-		fputs("2nd argument should be port number of the bank server", stderr);
+		fputs("Not enough arguments entered:\n", stderr);
+		fputs("1st argument should be IP address of the bank server\n", stderr);
+		fputs("2nd argument should be port number of the bank server\n", stderr);
 		fputs("3rd argument should be transaction: ", stderr);
-		fputs("B = balance inquiry, D = deposit, W = withdraw", stderr);
-		fputs("4th argument should be the account number", stderr);
-		fputs("5th argument should be value of deposit or withdraw in pennies", stderr);
+		fputs("B = balance inquiry, D = deposit, W = withdraw\n", stderr);
+		fputs("4th argument should be the account number\n", stderr);
+		fputs("5th argument should be value of deposit or withdraw in pennies\n", stderr);
 		return -1;
 	}
 	
@@ -191,19 +191,19 @@ int main(int argc, char **argv)
 		mainRequest.value = atoi(*(argv + 5));
 		break;
 	default:
-		fputs("Invalid transaction", stderr);
+		fputs("Invalid transaction - ", stderr);
 		return -1;
 	}
 	
 	// Connect to bank server
 	if (connectToServer(&sockData) == false) {
-		fputs("Unable to connect to bank server", stderr);
+		fputs("Unable to connect to bank server - ", stderr);
 		return -1;
 	}
 	
 	// Make the transaction specified by the terminal arguments
 	if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
-		fputs("Unable to make original transaction (from terminal arguments)", stderr);
+		fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
 		return -1;
 	}
 	
@@ -222,13 +222,13 @@ int main(int argc, char **argv)
 	
 	// Close client socket
 	if (close(sockData.clientSocket) < 0) {
-		fputs("Failed to properly close client socket", stderr);
+		fputs("Failed to properly close client socket - ", stderr);
 		return -1;
 	}
 	
 	// Ask user for next bank server transaction
 	if (newTransaction() == false) {
-		fputs("Unable to make requested transaction", stderr);
+		fputs("Unable to make requested transaction - ", stderr);
 		return -1;
 	}
 	

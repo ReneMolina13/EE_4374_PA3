@@ -87,7 +87,7 @@ int main()
 	// Create TCP server socket
 	int serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSocket < 0) {
-		fputs("Error creating socket", stderr);
+		fputs("Error creating socket - ", stderr);
 		return -1;
 	}
 
@@ -100,13 +100,13 @@ int main()
 	
 	// Bind local address to socket
 	if (bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(struct sockaddr)) < 0) {
-		fputs("Error binding local address to socket", stderr);
+		fputs("Error binding local address to socket - ", stderr);
 		return -1;
 	}
 	
 	// Have server listen for bank customers
 	if (listen(serverSocket, NUM_ACCTS) < 0) {
-		fputs("Server unable to listen for traffic", stderr);
+		fputs("Server unable to listen for traffic - ", stderr);
 		return -1;
 	}
 	
@@ -141,7 +141,7 @@ int main()
 		
 	// Close server socket
 	if (close(serverSocket) < 0) {
-		fputs("Unable to properly close server socket", stderr);
+		fputs("Unable to properly close server socket - ", stderr);
 		return -1;
 	}
 	
