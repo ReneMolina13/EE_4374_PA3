@@ -103,6 +103,7 @@ int main()
 	// TESTING
 	puts("TCP socket created:");
 	printf("Socket value: %i\n", serverSocket);
+	puts();
 	
 	
 	
@@ -119,6 +120,7 @@ int main()
 	printf("Server family value: %i\n", serverAddr.sin_family);
 	printf("Server IP value: %i\n", serverAddr.sin_addr.s_addr);
 	printf("Server port value: %i\n", serverAddr.sin_port);
+	puts();
 	
 	
 	
@@ -132,6 +134,7 @@ int main()
 	
 	// TESTING
 	puts("Server is now listening for incoming connections");
+	puts();
 	
 	
 	
@@ -154,6 +157,7 @@ int main()
 		printf("Client family value: %i\n", clientAddr.sin_family);
 		printf("Client IP value: %i\n", clientAddr.sin_addr.s_addr);
 		printf("Client port value: %i\n", clientAddr.sin_port);
+		puts();
 		
 		
 		
@@ -171,6 +175,7 @@ int main()
 		printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
 		printf("Account number: %i\n", clientRequest.acctnum);
 		printf("Value of transaction: %i\n", clientRequest.value);
+		puts();
 		
 		
 		
@@ -186,6 +191,7 @@ int main()
 		printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
 		printf("Account number: %i\n", clientRequest.acctnum);
 		printf("Value of transaction: %i\n", clientRequest.value);
+		puts();
 		
 		
 		
@@ -199,6 +205,7 @@ int main()
 		
 		// TESTING
 		puts("Receipt received by client");
+		puts();
 		
 		
 		
