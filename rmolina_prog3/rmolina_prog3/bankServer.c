@@ -138,6 +138,7 @@ int main()
 	// Run forever
 	while (1) {
 		// Accept client connection
+		char clientName[INET_ADDRSTRLEN];
 		struct sockaddr_in clientAddr;
 		socklen_t clientAddrLength = sizeof(clientAddr);
 		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddr, &clientAddrLength);
@@ -145,6 +146,8 @@ int main()
 			puts("Unable to accept client connection");
 			break;
 		}
+		inet_ntop(AF_INET, &clientAddr.sin_addr.s_addr, clientName, sizeof(clientName));
+			
 		
 		
 		
@@ -152,8 +155,8 @@ int main()
 		puts("Server accepted connection request:");
 		printf("Client socket value: %i\n", clientSocket);
 		printf("Client family value: %i\n", clientAddr.sin_family);
-		printf("Client IP value: %i\n", clientAddr.sin_addr.s_addr);
-		printf("Client port value: %i\n\n", clientAddr.sin_port);
+		printf("Client IP value: %i\n", clientName);
+		printf("Client port value: %i\n\n", ntohs(clientAddr.sin_port));
 		
 		
 		
