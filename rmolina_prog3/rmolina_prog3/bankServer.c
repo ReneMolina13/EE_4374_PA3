@@ -160,7 +160,8 @@ int main()
 		
 		
 		
-		// Receive request from client
+		while (1) {
+			// Receive request from client
 		sBANK_PROTOCOL clientRequest;
 		if (recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 			puts("Unable to receive request from client");
@@ -206,6 +207,7 @@ int main()
 		
 		
 		
+		}
 	}
 		
 	// Close server socket
