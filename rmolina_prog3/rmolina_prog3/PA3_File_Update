@@ -2,5 +2,3 @@
 make clean
 git pull origin
 make all
-# make runServer
-# ./bankClient 127.0.0.1 26207 B 10 
