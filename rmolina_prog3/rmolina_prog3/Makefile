@@ -3,7 +3,7 @@ CLTOBJ= bankClient.o
 SRVOBJ= bankServer.o
 
 # set compiler flags (debug and optimization)
-CFLAGS=-g -O3 -lpthread
+CFLAGS=-g -O3
 
 # first target is built by default
 all: bankClient bankServer
@@ -14,7 +14,7 @@ bankServer.o: rmolina_banking.h
 
 # compilation instruction ($@ = target, $^ = prerequisites)
 bankClient: $(CLTOBJ)
-	cc -o bankClient $(CFLAGS) $(CLTOBJ)
+	cc -o bankClient $(CFLAGS) $(CLTOBJ) -lpthread
 
 bankServer: $(SRVOBJ)
 	cc -o bankServer $(CFLAGS) $(SRVOBJ)
