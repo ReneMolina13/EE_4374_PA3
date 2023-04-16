@@ -155,7 +155,7 @@ int main(int argc, char **argv)
 	puts("Making original transaction\n");
 //**********************************************************************************
 	
-	for (int iteration = 10; iteration > 0; iteration++) {
+	for (int iteration = 0; iteration < 10; iteration++) {
 		// TESTING
 //**********************************************************************************
 		printf("Iteration number: %i\n", iteration);
