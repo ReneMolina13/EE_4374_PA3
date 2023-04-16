@@ -116,6 +116,15 @@ bool newTransaction()
 	printf("Transaction (B = balance inquiry, D = deposit, W = withdraw): ");
 	int numArgs;
 	c = getchar();
+	
+	
+	
+	// TESTING
+	printf("\n%c\n", c);
+	
+	
+	
+	
 	if (c == 'B' || c == 'b')
 		numArgs = 6;
 	else
