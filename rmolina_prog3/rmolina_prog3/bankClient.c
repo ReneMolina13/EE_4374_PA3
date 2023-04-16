@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 	
 	
 	// TESTING
-	puts("All threads have terminated\n");
+	puts("\nAll threads have terminated\n");
 	
 	
 	

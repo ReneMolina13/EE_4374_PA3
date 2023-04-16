@@ -165,9 +165,13 @@ int main()
 			sBANK_PROTOCOL clientRequest;
 			if (recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 				puts("Unable to receive request from client");
-				return -1;
+				// Close client socket
+				if (close(clientSocket) < 0) {
+					fputs("Unable to properly close server socket - ", stderr);
+					return -1;
+				}
 			}
-			
+						
 			
 			
 			// TESTING
@@ -197,7 +201,11 @@ int main()
 			// Confirm with client that request was completed
 			if (send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
 				puts("Unable to confirm completion of request to client");
-				return -1;
+				// Close client socket
+				if (close(clientSocket) < 0) {
+					fputs("Unable to properly close server socket - ", stderr);
+					return -1;
+				}
 			}
 			
 			
