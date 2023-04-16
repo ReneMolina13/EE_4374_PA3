@@ -131,10 +131,16 @@ bool connectToServer(NetInfo *sockData)
 bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 {
 	// Send the requested transaction to the server
-	if (send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0) < 0) {
+	ssize_t bytesSent;
+	bytesSent = send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
+	if (bytesSent < 0) {
 		puts("Unable to send request");
 		return false;
 	}
+	else if (bytesSent == 0)
+		puts("No data sent");
+	else
+		printf("Sent %i bytes out of a possible %i", bytesSent, sizeof(sBANK_PROTOCOL));
 	
 	// Receive the response from the server
 	ssize_t bytesReceived;
@@ -145,6 +151,8 @@ bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 	}
 	else if (bytesReceived == 0)
 		puts("No data received");
+	else
+		printf("Received %i bytes out of a possible %i", bytesReceived, sizeof(sBANK_PROTOCOL));
 	
 	return true;
 }

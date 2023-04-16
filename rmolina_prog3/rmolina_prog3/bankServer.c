@@ -180,6 +180,8 @@ int main()
 			}
 			else if (bytesReceived == 0)
 				puts("No data received");
+			else
+				printf("Received %i bytes out of a possible %i", bytesReceived, sizeof(sBANK_PROTOCOL));
 						
 // TESTING
 //**********************************************************************************
@@ -205,7 +207,9 @@ int main()
 //**********************************************************************************			
 			
 			// Confirm with client that request was completed
-			if (send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
+			ssize_t bytesSent;
+			bytesSent = send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
+			if (bytesSent < 0) {
 				puts("Unable to confirm completion of request to client");
 				// Close client socket
 				if (close(clientSocket) < 0) {
@@ -213,6 +217,10 @@ int main()
 					return -1;
 				}
 			}
+			else if (bytesSent == 0)
+				puts("No data sent");
+			else
+				printf("Sent %i bytes out of a possible %i", bytesSent, sizeof(sBANK_PROTOCOL));
 			
 // TESTING
 //**********************************************************************************
