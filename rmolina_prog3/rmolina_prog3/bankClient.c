@@ -130,14 +130,15 @@ bool newTransaction()
 		numArgs = 6;
 	else
 		numArgs = 7;
-	char **args = (char **) calloc(numArgs, sizeof(char[20]));
+	char **args = (char **) calloc(numArgs, sizeof(char *));
 	
 	
 	
 	// TESTING
-	for (int i = 0; i < numArgs; i++)
+	for (int i = 0; i < numArgs; i++) {
+		args[i] = calloc(20, sizeof(char);
 		printf("Size of argument %i: %li", i, sizeof(args[i]));
-	
+	}
 	
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
@@ -181,6 +182,8 @@ bool newTransaction()
 		execvp(args[0], args);
 	
 	// Parent frees pointer memory before exiting
+	for (int i = 0; i < numArgs; i++)
+		free(args[i]);
 	free(args);
 	
 	return true;
