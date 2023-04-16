@@ -146,23 +146,80 @@ bool newTransaction()
 	// Fill command line argument array with info from user
 	args[0] = "bankClient";						// Filename
 	argsAssigned++;
+	
+		
+		
+	// TESTING
+	printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 	printf("IP address of the bank server: ");
 	argsAssigned += scanf("%20s", args[1]);		// IP Address
+	
+		
+		
+	// TESTING
+	printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 	printf("Port number of the bank server: ");
 	argsAssigned += scanf("%20s", args[2]);		// Port Number
 	sprintf(args[3], "%c", c);					// Transaction
+	argsAssigned++;
+	
+		
+		
+	// TESTING
+	printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 	printf("Account number: ");
 	argsAssigned += scanf("%20s", args[4]);		// Account Number
+	
+		
+		
+	// TESTING
+	printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 	// Is value argument needed?
 	if (numArgs == 7) {
 		printf("Value of the transaction in pennies: ");
 		argsAssigned += scanf("%20s", args[5]);	// Transaction Value
+		
+		
+		
+		// TESTING
+		printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 		args[6] = NULL;							// End of arguments list
 		argsAssigned ++;
+		
+		
+		
+		// TESTING
+		printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 	}
 	else {
 		args[5] = NULL;							// End of arguments list
 		argsAssigned++;
+		
+		
+		
+		// TESTING
+		printf("Arguments assigned: %i", argsAssigned);
+		
+		
+		
 	}
 	
 	// Check to make sure all arguments successfully assigned
@@ -178,8 +235,17 @@ bool newTransaction()
 		return false;
 	}
 	// Child process: Arguments are new transaction specified by user
-	else if (pid == 0)
+	else if (pid == 0) {
+		
+		
+		
+		// TESTING
+		puts("Fork successful\n");
+		
+		
+		
 		execvp(args[0], args);
+	}
 	
 	// Parent frees pointer memory before exiting
 	for (int i = 0; i < numArgs; i++)
