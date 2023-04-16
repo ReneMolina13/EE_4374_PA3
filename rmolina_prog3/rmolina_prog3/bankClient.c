@@ -114,7 +114,7 @@ bool makeThreads()
 
 // TESTING
 //**********************************************************************************
-	puts("All %i threads have been created\n", numThreads);
+	printf("All %i threads have been created\n\n", numThreads);
 //**********************************************************************************
 
 
