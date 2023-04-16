@@ -136,7 +136,7 @@ bool processTransaction(sBANK_PROTOCOL *request)
 int main()
 {	
 	// Initialize bank server
-	sockaddr_in serverAddr;
+	struct sockaddr_in serverAddr;
 	int serverSocket = initBank(&serverAddr);
 	if (serverSocket < 0) {
 		fputs("Failed to initialize bank server - ", stderr);
