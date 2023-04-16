@@ -183,7 +183,7 @@ int main()
 						
 // TESTING
 //**********************************************************************************
-			puts("Received request from client");
+			puts("Received request from client:");
 			printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
 			printf("Account number: %i\n", clientRequest.acctnum);
 			printf("Value of transaction: %i\n\n", clientRequest.value);
