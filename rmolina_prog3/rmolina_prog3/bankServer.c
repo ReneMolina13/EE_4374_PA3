@@ -11,8 +11,10 @@
 #include <netdb.h>
 #include "rmolina_banking.h"
 
+
 // Number of bank accounts
 #define NUM_ACCTS 100
+
 
 // Server-side banking information
 typedef struct
@@ -20,6 +22,13 @@ typedef struct
 	unsigned int balance;
 	pthread_mutex_t mutex;
 } sBANK_ACCT_DATA;
+
+
+// Function Prototypes
+int initBank(struct sockaddr_in *);
+bool handleClient(int clientSocket);
+bool processTransaction();
+
 
 // Array of bank accounts
 sBANK_ACCT_DATA acctData[NUM_ACCTS];
@@ -84,6 +93,67 @@ int initBank(struct sockaddr_in *serverAddr)
 	// Return socket handle
 	return serverSocket;
 }
+
+
+// Handle Client
+bool handleClient(int clientSocket)
+{
+	// Receive request from client
+	sBANK_PROTOCOL clientRequest;
+	ssize_t bytesReceived;
+	bytesReceived = recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
+	if (bytesReceived < 0) {
+		puts("Unable to receive request from client");
+		return false;
+	}
+	else if (bytesReceived == 0)
+		puts("No data received");
+	else
+		printf("Received %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
+				
+// TESTING
+//**********************************************************************************
+	puts("Received request from client:");
+	printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
+	printf("Account number: %i\n", clientRequest.acctnum);
+	printf("Value of transaction: %i\n\n", clientRequest.value);
+//**********************************************************************************			
+	
+	// Perform requested transaction 
+	if (processTransaction(&clientRequest) == false) {
+		puts("Unable to complete transaction\n");
+		return false;
+	}
+	
+// TESTING
+//**********************************************************************************
+	puts("Transaction Completed\n");
+	puts("Receipt for client: ");
+	printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
+	printf("Account number: %i\n", clientRequest.acctnum);
+	printf("Value of transaction: %i\n\n", clientRequest.value);
+//**********************************************************************************			
+	
+	// Confirm with client that request was completed
+	ssize_t bytesSent;
+	bytesSent = send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
+	if (bytesSent < 0) {
+		puts("Unable to confirm completion of request to client");
+		return false
+	}
+	else if (bytesSent == 0)
+		puts("No data sent");
+	else
+		printf("Sent %li bytes out of a possible %lu\n\n", bytesSent, sizeof(sBANK_PROTOCOL));
+	
+// TESTING
+//**********************************************************************************
+	puts("Receipt received by client\n");
+//**********************************************************************************
+
+	return true;
+}
+
 
 // Processes transction requested by client
 bool processTransaction(sBANK_PROTOCOL *request)
@@ -165,69 +235,12 @@ int main()
 		printf("Client port value: %i\n\n", ntohs(clientAddr.sin_port));
 //**********************************************************************************		
 		
-		while (1) {
-			// Receive request from client
-			sBANK_PROTOCOL clientRequest;
-			ssize_t bytesReceived;
-			bytesReceived = recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
-			if (bytesReceived < 0) {
-				puts("Unable to receive request from client");
-				// Close client socket
-				if (close(clientSocket) < 0) {
-					fputs("Unable to properly close server socket - ", stderr);
-					return -1;
-				}
+		while (1)
+			if (handleClient(clientSocket) == false); {
+				fputs("Unable to handle client request - ", stderr);
+				return -1;
 			}
-			else if (bytesReceived == 0)
-				puts("No data received");
-			else
-				printf("Received %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
-						
-// TESTING
-//**********************************************************************************
-			puts("Received request from client:");
-			printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
-			printf("Account number: %i\n", clientRequest.acctnum);
-			printf("Value of transaction: %i\n\n", clientRequest.value);
-//**********************************************************************************			
-			
-			// Perform requested transaction 
-			if (processTransaction(&clientRequest) == false) {
-				puts("Unable to complete transaction\n");
-				continue;
-			}
-			
-// TESTING
-//**********************************************************************************
-			puts("Transaction Completed\n");
-			puts("Receipt for client: ");
-			printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
-			printf("Account number: %i\n", clientRequest.acctnum);
-			printf("Value of transaction: %i\n\n", clientRequest.value);
-//**********************************************************************************			
-			
-			// Confirm with client that request was completed
-			ssize_t bytesSent;
-			bytesSent = send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
-			if (bytesSent < 0) {
-				puts("Unable to confirm completion of request to client");
-				// Close client socket
-				if (close(clientSocket) < 0) {
-					fputs("Unable to properly close server socket - ", stderr);
-					return -1;
-				}
-			}
-			else if (bytesSent == 0)
-				puts("No data sent");
-			else
-				printf("Sent %li bytes out of a possible %lu\n\n", bytesSent, sizeof(sBANK_PROTOCOL));
-			
-// TESTING
-//**********************************************************************************
-			puts("Receipt received by client\n");
-//**********************************************************************************	
-		}
-	}
+}
 		
 	// Close server socket
 	if (close(serverSocket) < 0) {
