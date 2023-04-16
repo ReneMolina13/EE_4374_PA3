@@ -62,7 +62,7 @@ void *serverThread(void *param)
 bool parseCmdArgs(int argc, char **argv ,NetInfo *sockData, sBANK_PROTOCOL *mainRequest)
 {
 	// Check for correct number of arguments
-	if (argc < 5 && argc > 6) {
+	if (argc < 5 || argc > 6) {
 		puts("Not enough arguments entered:");
 		puts("1st argument should be IP address of the bank server");
 		puts("2nd argument should be port number of the bank server");
