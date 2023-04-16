@@ -26,7 +26,7 @@ sBANK_ACCT_DATA acctData[NUM_ACCTS];
 
 
 // Initialize bank server
-int initBank(sockaddr_in *serverAddr)
+int initBank(struct sockaddr_in *serverAddr)
 {
 	// Initialize bank accounts
 	srand(time(NULL));
