@@ -101,7 +101,7 @@ int main()
 	
 	
 	// TESTING
-	puts("TCP socket created:");
+	puts("\nTCP socket created:");
 	printf("Socket value: %i\n\n", serverSocket);
 	
 	

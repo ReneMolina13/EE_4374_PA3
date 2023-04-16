@@ -204,7 +204,7 @@ int main(int argc, char **argv)
 	
 	
 	// TESTING
-	puts("Connected to bank server: ");
+	puts("\nConnected to bank server: ");
 	puts("Making original transaction\n");
 	
 	
@@ -219,7 +219,6 @@ int main(int argc, char **argv)
 	
 	// TESTING
 	puts("Original transaction completed: ");
-	puts("Creating random number of threads to make bank transactions\n");
 	
 	
 	
@@ -232,12 +231,18 @@ int main(int argc, char **argv)
 	
 	
 	// TESTING
-	printf("%i threads created:\n", numThreads);
+	printf("Creating %i threads to make bank transactions\n", numThreads);
 	
 	
 	
 	for (int i = 0; i < numThreads; i++)
 		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
+
+
+
+	puts("All threads have been creating created");
+
+
 
 	// Wait for all threads to terminate
 	for (int i = 0; i < numThreads; i++)
