@@ -45,7 +45,7 @@ void *serverThread(void *param)
 
 
 	// TESTING
-	printf("%i", ++activeThreads);
+	printf("%i ", ++activeThreads);
 
 
 	
@@ -240,7 +240,8 @@ int main(int argc, char **argv)
 	
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
-	int numThreads = (rand() % 100) + 1;
+	// int numThreads = (rand() % 100) + 1;
+	int numThreads = 1;
 	tid = malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
