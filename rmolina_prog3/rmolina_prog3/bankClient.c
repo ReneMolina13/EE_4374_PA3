@@ -103,6 +103,11 @@ bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 
 void makeThreads(int socket)
 {
+// TESTING
+//**********************************************************************************
+	puts("Creating a random number threads to make random bank transactions\n");
+//**********************************************************************************
+	
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
 	// int numThreads = (rand() % 100) + 1;
@@ -201,7 +206,6 @@ int main(int argc, char **argv)
 // TESTING
 //**********************************************************************************
 		puts("Original transaction completed: ");
-		puts("Creating a random number threads to make random bank transactions\n");
 //**********************************************************************************
 		
 		// Make threads to make random transactions with bank server
