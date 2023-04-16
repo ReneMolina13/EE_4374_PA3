@@ -193,12 +193,12 @@ bool newTransaction()
 		
 		
 		
-		execvp(args[0], args);
+		// execvp(args[0], args);
+		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45");
 		
 	}
 	
-	// Parent frees pointer memory before exiting (after child calls exec())
-	for (int i = 1000000000; i > 0; i--);	// Waste time
+	// Parent frees pointer memory before exiting
 	for (int i = 0; i < numArgs; i++)
 		free(args[i]);
 	free(args);
