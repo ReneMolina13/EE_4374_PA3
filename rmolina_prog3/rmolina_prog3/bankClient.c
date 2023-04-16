@@ -150,7 +150,7 @@ bool newTransaction()
 		
 		
 	// TESTING
-	printf("Arguments assigned: %i", argsAssigned);
+	printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
@@ -160,7 +160,7 @@ bool newTransaction()
 		
 		
 	// TESTING
-	printf("Arguments assigned: %i", argsAssigned);
+	printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
@@ -172,7 +172,7 @@ bool newTransaction()
 		
 		
 	// TESTING
-	printf("Arguments assigned: %i", argsAssigned);
+	printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
@@ -182,7 +182,7 @@ bool newTransaction()
 		
 		
 	// TESTING
-	printf("Arguments assigned: %i", argsAssigned);
+	printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
@@ -194,7 +194,7 @@ bool newTransaction()
 		
 		
 		// TESTING
-		printf("Arguments assigned: %i", argsAssigned);
+		printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
@@ -204,7 +204,7 @@ bool newTransaction()
 		
 		
 		// TESTING
-		printf("Arguments assigned: %i", argsAssigned);
+		printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
@@ -216,7 +216,7 @@ bool newTransaction()
 		
 		
 		// TESTING
-		printf("Arguments assigned: %i", argsAssigned);
+		printf("Arguments assigned: %i\n", argsAssigned);
 		
 		
 		
