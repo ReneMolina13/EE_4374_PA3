@@ -190,7 +190,7 @@ int main()
 			puts("Receipt for client: ");
 			printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
 			printf("Account number: %i\n", clientRequest.acctnum);
-			printf("Value of transaction: %i\n\n", clientRequest.value);
+			printf("Value of transaction: $%i.%i\n\n", clientRequest.value/100, clientRequest.value%100);
 			
 			
 			

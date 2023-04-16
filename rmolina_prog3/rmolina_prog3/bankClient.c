@@ -201,17 +201,41 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
+	
+	
+	// TESTING
+	puts("Connected to bank server: ");
+	puts("Making original transaction\n");
+	
+	
+	
 	// Make the transaction specified by the terminal arguments
 	if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
 		fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
 		return -1;
 	}
 	
+	
+	
+	// TESTING
+	puts("Original transaction completed: ");
+	puts("Creating random number of threads to make bank transactions\n");
+	
+	
+	
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
 	int numThreads = (rand() % 100) + 1;
 	tid = malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
+	
+	
+	
+	// TESTING
+	printf("%i threads created:\n", numThreads);
+	
+	
+	
 	for (int i = 0; i < numThreads; i++)
 		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
 
@@ -220,17 +244,40 @@ int main(int argc, char **argv)
 		pthread_join(*(tid+i), NULL);
 	free(tid);
 	
+	
+	
+	// TESTING
+	puts("All threads have terminated\n");
+	
+	
+	
 	// Close client socket
 	if (close(sockData.clientSocket) < 0) {
 		fputs("Failed to properly close client socket - ", stderr);
 		return -1;
 	}
 	
+	
+	
+	// TESTING
+	puts("Client socket closed:");
+	puts("Asking user to enter parameters for new client socket\n");
+	
+	
+	
 	// Ask user for next bank server transaction
 	if (newTransaction() == false) {
 		fputs("Unable to make requested transaction - ", stderr);
 		return -1;
 	}
+	
+	
+	
+	// TESTING
+	puts("New process created to make a bank transaction:");
+	puts("Parent process terminating\n");
+	
+	
 	
 	// End process without waiting for child
 	return 0;
