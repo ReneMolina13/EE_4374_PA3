@@ -135,10 +135,8 @@ bool newTransaction()
 	
 	
 	// TESTING
-	for (int i = 0; i < numArgs; i++) {
-		args[i] = calloc(20, sizeof(char));
-		printf("Size of argument %i: %li\n", i, sizeof(args[i]));
-	}
+	for (int i = 0; i < numArgs; i++)
+		args[i] = (char *) calloc(20, sizeof(char));
 	
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
