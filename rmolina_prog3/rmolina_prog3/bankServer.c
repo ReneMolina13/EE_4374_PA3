@@ -56,7 +56,7 @@ int initBank(struct sockaddr_in *serverAddr)
 // TESTING
 //**********************************************************************************
 	puts("\n************************************************\n");
-	puts("Server is now listening for incoming connections\n");
+	puts("Server is now listening for incoming connections");
 	puts("\n************************************************\n");
 //**********************************************************************************	
 
