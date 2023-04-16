@@ -31,8 +31,24 @@ pthread_attr_t attr;
 // array of threads
 pthread_t *tid;
 
+
+
+// TESTING
+int activeThreads = 0;
+
+
+
+
 void *serverThread(void *param)
 {
+
+
+
+	// TESTING
+	printf("%i", ++activeThreads);
+
+
+	
 	int *parameter = (int *) param;
 	int clientSocket = *parameter;
 	
