@@ -131,6 +131,15 @@ bool newTransaction()
 	else
 		numArgs = 7;
 	char **args = (char **) calloc(numArgs, sizeof(char[20]));
+	
+	
+	
+	// TESTING
+	for (int i = 0; i < numArgs; i++)
+		printf("Size of argument %i: %i", i, sizeof(args[i]);
+	
+	
+	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	
 	// Fill command line argument array with info from user
