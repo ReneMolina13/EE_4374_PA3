@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 		
 // TESTING
 //**********************************************************************************
-		puts("Original transaction completed: ");
+		puts("Original transaction completed\n");
 //**********************************************************************************
 		
 		// Make threads to make random transactions with bank server
