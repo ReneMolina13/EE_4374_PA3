@@ -155,10 +155,21 @@ bool newTransaction()
 		args[6] = NULL;							// End of arguments list
 		argsAssigned ++;
 	}
-	else {
+	else if (numArgs == 6) {
 		args[5] = NULL;							// End of arguments list
 		argsAssigned++;
 	}
+	else {
+		fputs("Error with argument array size - ", stderr);
+		return false;
+	}
+	
+	
+	
+	// TESTING
+	printf("Arguments assigned: %i", argsAssigned);
+	
+	
 	
 	// Check to make sure all arguments successfully assigned
 	if (argsAssigned != numArgs) {
