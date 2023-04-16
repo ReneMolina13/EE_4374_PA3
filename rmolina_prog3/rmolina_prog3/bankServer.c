@@ -136,10 +136,10 @@ bool handleClient(int clientSocket)
 	
 	// Confirm with client that request was completed
 	ssize_t bytesSent;
-	bytesSent = send(serverSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
+	bytesSent = send(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesSent < 0) {
 		puts("Unable to confirm completion of request to client");
-		return false
+		return false;
 	}
 	else if (bytesSent == 0)
 		puts("No data sent");
