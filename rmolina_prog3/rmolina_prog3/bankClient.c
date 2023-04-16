@@ -199,8 +199,25 @@ bool newTransaction()
 	}
 	
 	// Parent frees pointer memory before exiting
-	for (int i = 0; i < numArgs; i++)
+	for (int i = 0; i < numArgs; i++) {
+		
+		
+		
+		// TESTING
+		printf("Freeing argument %i\n", i);
+		
+		
+		
 		free(args[i]);
+	}
+	
+	
+	
+	// TESTING
+	puts("Freeing argument double-pointer");
+	
+	
+	
 	free(args);
 	
 	return true;
