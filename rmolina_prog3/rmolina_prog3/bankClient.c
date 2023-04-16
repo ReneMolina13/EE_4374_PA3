@@ -136,7 +136,7 @@ bool newTransaction()
 	
 	// TESTING
 	for (int i = 0; i < numArgs; i++)
-		printf("Size of argument %i: %i", i, sizeof(args[i]);
+		printf("Size of argument %i: %l", i, sizeof(args[i]);
 	
 	
 	
