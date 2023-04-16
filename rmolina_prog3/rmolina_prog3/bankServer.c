@@ -28,8 +28,9 @@ int initBank(struct sockaddr_in *serverAddr)
 	
 // TESTING
 //**********************************************************************************
-	puts("\nTCP socket created:");
-	printf("Socket value: %i\n\n", serverSocket);
+	puts("TCP socket created:");
+	printf("Socket value: %i\n", serverSocket);
+	puts("\n************************************************\n");
 //**********************************************************************************	
 	
 	// Bind local address to socket
@@ -43,7 +44,7 @@ int initBank(struct sockaddr_in *serverAddr)
 	puts("TCP socket bound to address");
 	printf("Server family value: %i\n", serverAddr->sin_family);
 	printf("Server IP value: %i\n", serverAddr->sin_addr.s_addr);
-	printf("Server port value: %i\n\n", ntohs(serverAddr->sin_port));
+	printf("Server port value: %i\n", ntohs(serverAddr->sin_port));
 //**********************************************************************************	
 	
 	// Have server listen for bank customers
@@ -54,7 +55,9 @@ int initBank(struct sockaddr_in *serverAddr)
 	
 // TESTING
 //**********************************************************************************
+	puts("\n************************************************\n");
 	puts("Server is now listening for incoming connections\n");
+	puts("\n************************************************\n");
 //**********************************************************************************	
 
 	// Return socket handle
@@ -70,13 +73,13 @@ bool handleClient(int clientSocket)
 	ssize_t bytesReceived;
 	bytesReceived = recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesReceived < 0) {
-		puts("\nUnable to receive request from client");
+		puts("Unable to receive request from client");
 		return false;
 	}
 	else if (bytesReceived == 0)
-		puts("\nNo data received");
+		puts("No data received\n");
 	else
-		printf("\nReceived %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
+		printf("Received %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
 				
 // TESTING
 //**********************************************************************************
@@ -111,11 +114,12 @@ bool handleClient(int clientSocket)
 	else if (bytesSent == 0)
 		puts("No data sent");
 	else
-		printf("Sent %li bytes out of a possible %lu\n\n", bytesSent, sizeof(sBANK_PROTOCOL));
+		printf("Sent %li bytes out of a possible %lu\n", bytesSent, sizeof(sBANK_PROTOCOL));
 	
 // TESTING
 //**********************************************************************************
-	puts("Receipt received by client\n");
+	puts("Receipt received by client");
+	puts("\n************************************************\n");
 //**********************************************************************************
 
 	return true;
@@ -172,6 +176,11 @@ bool processTransaction(sBANK_PROTOCOL *request)
 
 int main()
 {	
+// TESTING
+//**********************************************************************************
+	puts("\n************************************************\n");
+//**********************************************************************************
+
 	// Initialize bank server
 	struct sockaddr_in serverAddr;
 	int serverSocket = initBank(&serverAddr);
@@ -199,7 +208,8 @@ int main()
 		printf("Client socket value: %i\n", clientSocket);
 		printf("Client family value: %i\n", clientAddr.sin_family);
 		printf("Client IP value: %s\n", clientName);
-		printf("Client port value: %i\n\n", ntohs(clientAddr.sin_port));
+		printf("Client port value: %i\n", ntohs(clientAddr.sin_port));
+		puts("\n************************************************\n");
 //**********************************************************************************		
 		
 		while (1)

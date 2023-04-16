@@ -215,7 +215,7 @@ int main(int argc, char **argv)
 	
 // TESTING
 //**********************************************************************************
-	puts("Client socket closed:");
+	puts("Client socket closed\n");
 //**********************************************************************************
 	
 	// End process without waiting for child
