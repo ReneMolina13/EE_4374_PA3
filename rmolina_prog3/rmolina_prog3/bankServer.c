@@ -1,37 +1,4 @@
-#include <stdio.h>		// Standard I/O library
-#include <stdlib.h>		// Standard library: atoi(), malloc
-#include <pthread.h>	// pthreads library
-#include <unistd.h>		// Unix system call library
-#include <signal.h>		// Signal handler library
-#include <time.h>		// srand function
-#include <string.h>		// memset function
-#include <stdbool.h>	// bool data type
-#include <sys/socket.h>	
-#include <arpa/inet.h>
-#include <netdb.h>
-#include "rmolina_banking.h"
-
-
-// Number of bank accounts
-#define NUM_ACCTS 100
-
-
-// Server-side banking information
-typedef struct
-{
-	unsigned int balance;
-	pthread_mutex_t mutex;
-} sBANK_ACCT_DATA;
-
-
-// Function Prototypes
-int initBank(struct sockaddr_in *);
-bool handleClient(int clientSocket);
-bool processTransaction();
-
-
-// Array of bank accounts
-sBANK_ACCT_DATA acctData[NUM_ACCTS];
+#include "bankServer.h"
 
 
 // Initialize bank server

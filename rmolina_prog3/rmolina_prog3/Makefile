@@ -9,8 +9,8 @@ CFLAGS=-g -O3
 all: bankClient bankServer
 
 # include file dependencies
-bankClient.o: rmolina_banking.h
-bankServer.o: rmolina_banking.h
+bankClient.o: bankClient.h rmolina_banking.h
+bankServer.o: bankServer.h rmolina_banking.h
 
 # compilation instruction ($@ = target, $^ = prerequisites)
 bankClient: $(CLTOBJ)

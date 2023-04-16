@@ -1,36 +1,5 @@
-#include <stdio.h>		// Standard I/O library
-#include <stdlib.h>		// Standard library: atoi(), malloc
-#include <pthread.h>	// pthreads library
-#include <unistd.h>		// Unix system call library
-#include <signal.h>		// Signal handler library
-#include <time.h>		// srand function
-#include <string.h>		// memset function
-#include <stdbool.h>	// bool data type
-#include <sys/socket.h>	
-#include <arpa/inet.h>
-#include <netdb.h>
-#include "rmolina_banking.h"
+#include "bankClient.h"
 
-// Structure holding connection info (from cmd line & necessary structures)
-typedef struct
-{
-	char *cmdIP;
-	unsigned int cmdPort;
-	int clientSocket;
-	struct sockaddr_in serverAddr;
-} NetInfo;
-
-// Function prototypes
-void *serverThread(void *);
-bool parseCmdArgs(int, char **, NetInfo *, sBANK_PROTOCOL *);
-bool connectToServer(NetInfo *sockData);
-bool makeBankRequest(int, sBANK_PROTOCOL *);
-void makeThreads(int);
-
-// pthread attributes
-pthread_attr_t attr;
-// array of threads
-pthread_t *tid;
 
 // TESTING
 //**********************************************************************************
