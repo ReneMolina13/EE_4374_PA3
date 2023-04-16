@@ -155,10 +155,10 @@ int main(int argc, char **argv)
 	puts("Making original transaction\n");
 //**********************************************************************************
 	
-	for (int i = 10; i > 0; i++) {
+	for (int iteration = 10; i > 0; i++) {
 		// TESTING
 //**********************************************************************************
-		printf("Iteration number: %i\n", i);
+		printf("Iteration number: %i\n", iteration);
 //**********************************************************************************
 		
 		// Make the transaction specified by the terminal arguments
