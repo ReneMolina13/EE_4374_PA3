@@ -24,6 +24,67 @@ typedef struct
 // Array of bank accounts
 sBANK_ACCT_DATA acctData[NUM_ACCTS];
 
+
+// Initialize bank server
+int initBank(sockaddr_in *serverAddr)
+{
+	// Initialize bank accounts
+	srand(time(NULL));
+	for (int i = 0; i < NUM_ACCTS; i++) {
+		// Set account balances to random values
+		acctData[i].balance = rand();
+		// Initialize account mutexes
+		pthread_mutex_init(&acctData[i].mutex, NULL);
+	}
+	
+	// Create TCP server socket
+	int serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (serverSocket < 0) {
+		puts("Error creating socket");
+		return -1;
+	}
+
+	// Initialize address structure
+	memset(serverAddr, 0, sizeof(*serverAddr));
+	serverAddr->sin_family = AF_INET;
+	serverAddr->sin_addr.s_addr = htonl(INADDR_ANY);	// Allows connection to any IP address
+	serverAddr->sin_port = htons(26207);
+	
+// TESTING
+//**********************************************************************************
+	puts("\nTCP socket created:");
+	printf("Socket value: %i\n\n", serverSocket);
+//**********************************************************************************	
+	
+	// Bind local address to socket
+	if (bind(serverSocket, (struct sockaddr *) serverAddr, sizeof(struct sockaddr)) < 0) {
+		puts("Error binding local address to socket");
+		return -1;
+	}
+	
+// TESTING
+//**********************************************************************************
+	puts("TCP socket bound to address");
+	printf("Server family value: %i\n", serverAddr->sin_family);
+	printf("Server IP value: %i\n", serverAddr->sin_addr.s_addr);
+	printf("Server port value: %i\n\n", ntohs(serverAddr->sin_port));
+//**********************************************************************************	
+	
+	// Have server listen for bank customers
+	if (listen(serverSocket, NUM_ACCTS) < 0) {
+		puts("Server unable to listen for traffic");
+		return -1;
+	}
+	
+// TESTING
+//**********************************************************************************
+	puts("Server is now listening for incoming connections\n");
+//**********************************************************************************	
+
+	// Return socket handle
+	return serverSocket;
+}
+
 // Processes transction requested by client
 bool processTransaction(sBANK_PROTOCOL *request)
 {	
@@ -73,61 +134,15 @@ bool processTransaction(sBANK_PROTOCOL *request)
 }
 
 int main()
-{
-	// Initialize bank
-	srand(time(NULL));
-	for (int i = 0; i < NUM_ACCTS; i++) {
-		// Set account balances to random values
-		acctData[i].balance = rand();
-		// Initialize account mutexes
-		pthread_mutex_init(&acctData[i].mutex, NULL);
-	}
-	
-	// Create TCP server socket
-	int serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+{	
+	// Initialize bank server
+	sockaddr_in serverAddr;
+	int serverSocket = initBank(&serverAddr);
 	if (serverSocket < 0) {
-		fputs("Error creating socket - ", stderr);
+		fputs("Failed to initialize bank server - ", stderr);
 		return -1;
 	}
 
-	// Initialize address structure
-	struct sockaddr_in serverAddr;
-	memset(&serverAddr, 0, sizeof(serverAddr));
-	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);	// Allows connection to any IP address
-	serverAddr.sin_port = htons(26207);
-	
-// TESTING
-//**********************************************************************************
-	puts("\nTCP socket created:");
-	printf("Socket value: %i\n\n", serverSocket);
-//**********************************************************************************	
-	
-	// Bind local address to socket
-	if (bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(struct sockaddr)) < 0) {
-		fputs("Error binding local address to socket - ", stderr);
-		return -1;
-	}
-	
-// TESTING
-//**********************************************************************************
-	puts("TCP socket bound to address");
-	printf("Server family value: %i\n", serverAddr.sin_family);
-	printf("Server IP value: %i\n", serverAddr.sin_addr.s_addr);
-	printf("Server port value: %i\n\n", ntohs(serverAddr.sin_port));
-//**********************************************************************************	
-	
-	// Have server listen for bank customers
-	if (listen(serverSocket, NUM_ACCTS) < 0) {
-		fputs("Server unable to listen for traffic - ", stderr);
-		return -1;
-	}
-	
-// TESTING
-//**********************************************************************************
-	puts("Server is now listening for incoming connections\n");
-//**********************************************************************************	
-	
 	// Run forever
 	while (1) {
 		// Accept client connection
@@ -136,7 +151,7 @@ int main()
 		socklen_t clientAddrLength = sizeof(clientAddr);
 		int clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddr, &clientAddrLength);
 		if (clientSocket < 0) {
-			puts("Unable to accept client connection");
+			fputs("Unable to accept client connection - ", stderr);
 			return -1;
 		}
 		inet_ntop(AF_INET, &clientAddr.sin_addr.s_addr, clientName, sizeof(clientName));
@@ -153,7 +168,9 @@ int main()
 		while (1) {
 			// Receive request from client
 			sBANK_PROTOCOL clientRequest;
-			if (recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0) < 0) {
+			ssize_t bytesReceived;
+			bytesReceived = recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
+			if (bytesReceived < 0) {
 				puts("Unable to receive request from client");
 				// Close client socket
 				if (close(clientSocket) < 0) {
@@ -161,6 +178,8 @@ int main()
 					return -1;
 				}
 			}
+			else if (bytesReceived == 0)
+				puts("No data received");
 						
 // TESTING
 //**********************************************************************************
@@ -199,7 +218,6 @@ int main()
 //**********************************************************************************
 			puts("Receipt received by client\n");
 //**********************************************************************************	
-				
 		}
 	}
 		

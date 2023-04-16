@@ -18,13 +18,14 @@ typedef struct
 	unsigned int cmdPort;
 	int clientSocket;
 	struct sockaddr_in serverAddr;
-} connectionInfo;
+} NetInfo;
 
 // Function prototypes
-void *serverThread(void *param);
-bool connectToServer(connectionInfo *sockData);
-bool makeBankRequest(int, sBANK_PROTOCOL *bankTransaction);
-void makeThreads(int socket);
+void *serverThread(void *);
+bool parseCmdArgs(int, char **, NetInfo *, sBANK_PROTOCOL *);
+bool connectToServer(NetInfo *sockData);
+bool makeBankRequest(int, sBANK_PROTOCOL *);
+void makeThreads(int);
 
 // pthread attributes
 pthread_attr_t attr;
@@ -58,7 +59,52 @@ void *serverThread(void *param)
 }
 
 
-bool connectToServer(connectionInfo *sockData)
+bool parseCmdArgs(int argc, char **argv ,NetInfo *sockData, sBANK_PROTOCOL *mainRequest)
+{
+	// Check for correct number of arguments
+	if (argc < 5 && argc > 6) {
+		puts("Not enough arguments entered:");
+		puts("1st argument should be IP address of the bank server");
+		puts("2nd argument should be port number of the bank server");
+		puts("3rd argument should be transaction:");
+		puts("B = balance inquiry, D = deposit, W = withdraw");
+		puts("4th argument should be the account number");
+		puts("5th argument should be value of deposit or withdraw in pennies");
+		return false;
+	}
+	
+	// Extract command line arguemnts into appropriate structures
+	sockData->cmdIP = *(argv + 1);
+	sockData->cmdPort = atoi(*(argv + 2));
+	switch(**(argv + 3)) {
+	case 'B':
+	case 'b':
+		mainRequest->trans = BANK_TRANS_INQUIRY;
+		mainRequest->acctnum = atoi(*(argv + 4));
+		mainRequest->value = 0;
+		break;
+	case 'D':
+	case 'd':
+		mainRequest->trans = BANK_TRANS_DEPOSIT;
+		mainRequest->acctnum = atoi(*(argv + 4));
+		mainRequest->value = atoi(*(argv + 5));
+		break;
+	case 'W':
+	case 'w':
+		mainRequest->trans = BANK_TRANS_WITHDRAW;
+		mainRequest->acctnum = atoi(*(argv + 4));
+		mainRequest->value = atoi(*(argv + 5));
+		break;
+	default:
+		puts("Invalid transaction");
+		return false;
+	}
+	
+	return true;
+}
+
+
+bool connectToServer(NetInfo *sockData)
 {
 	// Create TCP client socket
 	sockData->clientSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -92,10 +138,14 @@ bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 	}
 	
 	// Receive the response from the server
-	if (recv(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0) < 0) {
+	ssize_t bytesReceived;
+	bytesReceived = recv(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
+	if (bytesReceived < 0) {
 		puts("Failed to get response from server");
 		return false;
 	}
+	else if (bytesReceived == 0)
+		puts("No data received");
 	
 	return true;
 }
@@ -138,44 +188,13 @@ void makeThreads(int socket)
 
 int main(int argc, char **argv)
 {	
-	// Check for correct number of arguments
-	if (argc < 5 && argc > 6) {
-		fputs("Not enough arguments entered:\n", stderr);
-		fputs("1st argument should be IP address of the bank server\n", stderr);
-		fputs("2nd argument should be port number of the bank server\n", stderr);
-		fputs("3rd argument should be transaction: ", stderr);
-		fputs("B = balance inquiry, D = deposit, W = withdraw\n", stderr);
-		fputs("4th argument should be the account number\n", stderr);
-		fputs("5th argument should be value of deposit or withdraw in pennies\n", stderr);
-		return -1;
-	}
+	// Input structures
+	NetInfo sockData;	// Holds TCP Connection information
+	sBANK_PROTOCOL mainRequest;	// Holds bank request info from user
 	
-	// Extract command line arguemnts into appropriate structures
-	connectionInfo sockData;
-	sockData.cmdIP = *(argv + 1);
-	sockData.cmdPort = atoi(*(argv + 2));
-	sBANK_PROTOCOL mainRequest;
-	switch(**(argv + 3)) {
-	case 'B':
-	case 'b':
-		mainRequest.trans = BANK_TRANS_INQUIRY;
-		mainRequest.acctnum = atoi(*(argv + 4));
-		mainRequest.value = 0;
-		break;
-	case 'D':
-	case 'd':
-		mainRequest.trans = BANK_TRANS_DEPOSIT;
-		mainRequest.acctnum = atoi(*(argv + 4));
-		mainRequest.value = atoi(*(argv + 5));
-		break;
-	case 'W':
-	case 'w':
-		mainRequest.trans = BANK_TRANS_WITHDRAW;
-		mainRequest.acctnum = atoi(*(argv + 4));
-		mainRequest.value = atoi(*(argv + 5));
-		break;
-	default:
-		fputs("Invalid transaction - ", stderr);
+	// Parse command line arguments
+	if (parseCmdArgs(argc, argv, &sockData, &mainRequest) == false) {
+		fputs("Unable to parse command line arguments - ", stderr);
 		return -1;
 	}
 	
