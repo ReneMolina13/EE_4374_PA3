@@ -136,7 +136,7 @@ bool newTransaction()
 	
 	// TESTING
 	for (int i = 0; i < numArgs; i++) {
-		args[i] = calloc(20, sizeof(char);
+		args[i] = calloc(20, sizeof(char));
 		printf("Size of argument %i: %li", i, sizeof(args[i]));
 	}
 	
