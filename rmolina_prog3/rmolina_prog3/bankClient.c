@@ -106,7 +106,7 @@ void makeThreads(int socket)
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
 	// int numThreads = (rand() % 100) + 1;
-	int numThreads = 0;
+	int numThreads = 4;
 	tid = malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
@@ -203,8 +203,9 @@ int main(int argc, char **argv)
 		puts("Original transaction completed: ");
 		puts("Creating a random number threads to make random bank transactions\n");
 //**********************************************************************************
-
-		makeThreads(sockData.clientSocket);
+		
+		// Make threads to make random transactions with bank server
+		// makeThreads(sockData.clientSocket);
 	}
 	
 	// Close client socket
