@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 		// Create between 0 and 100 threads to make random bank server requests
 		srand(time(NULL));
 		// int numThreads = (rand() % 100) + 1;
-		int numThreads = 1;
+		int numThreads = 0;
 		tid = malloc(numThreads * sizeof(pthread_t));
 		pthread_attr_init(&attr);
 		
