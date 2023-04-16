@@ -100,6 +100,36 @@ bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 }
 
 
+bool makeThreads()
+{
+	// Create between 0 and 100 threads to make random bank server requests
+	srand(time(NULL));
+	// int numThreads = (rand() % 100) + 1;
+	int numThreads = 0;
+	tid = malloc(numThreads * sizeof(pthread_t));
+	pthread_attr_init(&attr);
+	
+	for (int i = 0; i < numThreads; i++)
+		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
+
+// TESTING
+//**********************************************************************************
+	puts("All %i threads have been created\n", numThreads);
+//**********************************************************************************
+
+
+	// Wait for all threads to terminate
+	for (int i = 0; i < numThreads; i++)
+		pthread_join(*(tid+i), NULL);
+	free(tid);
+	
+// TESTING
+//**********************************************************************************
+	puts("\n\nAll threads have terminated\n");
+//**********************************************************************************
+}
+
+
 int main(int argc, char **argv)
 {	
 	// Check for correct number of arguments
@@ -156,7 +186,7 @@ int main(int argc, char **argv)
 //**********************************************************************************
 	
 	for (int iteration = 0; iteration < 10; iteration++) {
-		// TESTING
+// TESTING
 //**********************************************************************************
 		printf("Iteration number: %i\n", iteration);
 //**********************************************************************************
@@ -170,37 +200,7 @@ int main(int argc, char **argv)
 // TESTING
 //**********************************************************************************
 		puts("Original transaction completed: ");
-//**********************************************************************************		
-
-		// Create between 0 and 100 threads to make random bank server requests
-		srand(time(NULL));
-		// int numThreads = (rand() % 100) + 1;
-		int numThreads = 0;
-		tid = malloc(numThreads * sizeof(pthread_t));
-		pthread_attr_init(&attr);
-		
-// TESTING
-//**********************************************************************************
-		printf("Creating %i threads to make bank transactions\n", numThreads);
-//**********************************************************************************
-		
-		for (int i = 0; i < numThreads; i++)
-			pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
-
-// TESTING
-//**********************************************************************************
-		puts("All threads have been created\n");
-//**********************************************************************************
-
-
-		// Wait for all threads to terminate
-		for (int i = 0; i < numThreads; i++)
-			pthread_join(*(tid+i), NULL);
-		free(tid);
-		
-// TESTING
-//**********************************************************************************
-		puts("\n\nAll threads have terminated\n");
+		puts("Creating a random number threads to make random bank transactions\n");
 //**********************************************************************************
 	}
 	
