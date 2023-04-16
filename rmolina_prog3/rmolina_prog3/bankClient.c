@@ -198,7 +198,7 @@ bool newTransaction()
 	}
 	
 	// Parent frees pointer memory before exiting (after child calls exec())
-	for (int i = 10000; i > 0; i--);	// Waste time
+	for (int i = 1000000; i > 0; i--);	// Waste time
 	for (int i = 0; i < numArgs; i++)
 		free(args[i]);
 	free(args);
