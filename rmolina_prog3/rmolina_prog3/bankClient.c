@@ -162,53 +162,54 @@ int main(int argc, char **argv)
 	
 	
 	
-	// Make the transaction specified by the terminal arguments
-	if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
-		fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
-		return -1;
+	for (int i = 10; i > 0; i++) {
+		// Make the transaction specified by the terminal arguments
+		if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
+			fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
+			return -1;
+		}
+		
+		
+		
+		// TESTING
+		puts("Original transaction completed: ");
+		
+		
+		
+		// Create between 0 and 100 threads to make random bank server requests
+		srand(time(NULL));
+		// int numThreads = (rand() % 100) + 1;
+		int numThreads = 1;
+		tid = malloc(numThreads * sizeof(pthread_t));
+		pthread_attr_init(&attr);
+		
+		
+		
+		// TESTING
+		printf("Creating %i threads to make bank transactions\n", numThreads);
+		
+		
+		
+		for (int i = 0; i < numThreads; i++)
+			pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
+
+
+
+		puts("All threads have been creating created");
+
+
+
+		// Wait for all threads to terminate
+		for (int i = 0; i < numThreads; i++)
+			pthread_join(*(tid+i), NULL);
+		free(tid);
+		
+		
+		
+		// TESTING
+		puts("\nAll threads have terminated\n");
+		
 	}
-	
-	
-	
-	// TESTING
-	puts("Original transaction completed: ");
-	
-	
-	
-	// Create between 0 and 100 threads to make random bank server requests
-	srand(time(NULL));
-	// int numThreads = (rand() % 100) + 1;
-	int numThreads = 1;
-	tid = malloc(numThreads * sizeof(pthread_t));
-	pthread_attr_init(&attr);
-	
-	
-	
-	// TESTING
-	printf("Creating %i threads to make bank transactions\n", numThreads);
-	
-	
-	
-	for (int i = 0; i < numThreads; i++)
-		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
-
-
-
-	puts("All threads have been creating created");
-
-
-
-	// Wait for all threads to terminate
-	for (int i = 0; i < numThreads; i++)
-		pthread_join(*(tid+i), NULL);
-	free(tid);
-	
-	
-	
-	// TESTING
-	puts("\nAll threads have terminated\n");
-	
-	
 	
 	// Close client socket
 	if (close(sockData.clientSocket) < 0) {
