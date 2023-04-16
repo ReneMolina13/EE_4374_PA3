@@ -107,6 +107,7 @@ bool newTransaction()
 {
 	// Ask if user wants to request another transaction
 	printf("\nWould you like to make another transaction? (y/n) ");
+	getchar();
 	char c = getchar();
 	if (c != 'y' && c != 'Y')
 		return true;
