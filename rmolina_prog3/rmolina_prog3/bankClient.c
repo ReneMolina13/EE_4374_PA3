@@ -107,7 +107,6 @@ bool newTransaction()
 {
 	// Ask if user wants to request another transaction
 	printf("\nWould you like to make another transaction? (y/n) ");
-	getchar();
 	char c = getchar();
 	if (c != 'y' && c != 'Y')
 		return true;
@@ -116,6 +115,7 @@ bool newTransaction()
 	printf("\nEnter in new transaction for bank server\n");
 	printf("Transaction (B = balance inquiry, D = deposit, W = withdraw): ");
 	int numArgs;
+	getchar();
 	c = getchar();
 	
 	
@@ -306,7 +306,6 @@ int main(int argc, char **argv)
 	
 	
 	// TESTING
-	puts("New process created to make a bank transaction:");
 	puts("Parent process terminating\n");
 	
 	
