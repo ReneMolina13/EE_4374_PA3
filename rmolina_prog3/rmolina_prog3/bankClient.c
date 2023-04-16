@@ -197,29 +197,30 @@ bool newTransaction()
 		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45", NULL);
 		
 	}
-	
 	// Parent frees pointer memory before exiting
-	for (int i = 0; i < numArgs; i++) {
+	else if (pid > 0) {
+		for (int i = 0; i < numArgs; i++) {
+			
+			
+			
+			// TESTING
+			printf("Freeing argument %i\n", i);
+			
+			
+			
+			free(args[i]);
+		}
 		
 		
 		
 		// TESTING
-		printf("Freeing argument %i\n", i);
+		puts("Freeing argument double-pointer");
 		
 		
 		
-		free(args[i]);
+		free(args);
+		
 	}
-	
-	
-	
-	// TESTING
-	puts("Freeing argument double-pointer");
-	
-	
-	
-	free(args);
-	
 	return true;
 }
 
