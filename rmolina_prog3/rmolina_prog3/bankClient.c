@@ -117,15 +117,6 @@ bool newTransaction()
 	int numArgs;
 	getchar();
 	c = getchar();
-	
-	
-	
-	// TESTING
-	printf("\n%c\n", c);
-	
-	
-	
-	
 	if (c == 'B' || c == 'b')
 		numArgs = 6;
 	else
@@ -144,80 +135,29 @@ bool newTransaction()
 	// Fill command line argument array with info from user
 	args[0] = "bankClient";						// Filename
 	argsAssigned++;
-	
-		
-		
-	// TESTING
-	printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
 		
 	printf("IP address of the bank server: ");
 	argsAssigned += scanf("%20s", args[1]);		// IP Address
 	
-		
-		
-	// TESTING
-	printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
-		
 	printf("Port number of the bank server: ");
 	argsAssigned += scanf("%20s", args[2]);		// Port Number
+	
 	sprintf(args[3], "%c", c);					// Transaction
 	argsAssigned++;
 	
-		
-		
-	// TESTING
-	printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
-		
 	printf("Account number: ");
 	argsAssigned += scanf("%20s", args[4]);		// Account Number
-	
-		
-		
-	// TESTING
-	printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
-		
+
 	// Is value argument needed?
 	if (numArgs == 7) {
 		printf("Value of the transaction in pennies: ");
 		argsAssigned += scanf("%20s", args[5]);	// Transaction Value
-		
-		
-		
-		// TESTING
-		printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
-		
 		args[6] = NULL;							// End of arguments list
 		argsAssigned ++;
-		
-		
-		
-		// TESTING
-		printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
-		
 	}
 	else {
 		args[5] = NULL;							// End of arguments list
 		argsAssigned++;
-		
-		
-		
-		// TESTING
-		printf("Arguments assigned: %i\n", argsAssigned);
-		
-		
-		
 	}
 	
 	// Check to make sure all arguments successfully assigned
