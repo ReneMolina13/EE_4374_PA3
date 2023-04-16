@@ -153,9 +153,14 @@ int main(int argc, char **argv)
 //**********************************************************************************
 	puts("\nConnected to bank server: ");
 	puts("Making original transaction\n");
-//**********************************************************************************	
+//**********************************************************************************
 	
 	for (int i = 10; i > 0; i++) {
+		// TESTING
+//**********************************************************************************
+		printf("Iteration number: %i\n", i);
+//**********************************************************************************
+		
 		// Make the transaction specified by the terminal arguments
 		if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
 			fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
