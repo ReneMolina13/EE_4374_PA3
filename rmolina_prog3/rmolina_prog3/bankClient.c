@@ -66,8 +66,7 @@ bool parseCmdArgs(int argc, char **argv ,NetInfo *sockData, sBANK_PROTOCOL *main
 		puts("Not enough arguments entered:");
 		puts("1st argument should be IP address of the bank server");
 		puts("2nd argument should be port number of the bank server");
-		puts("3rd argument should be transaction:");
-		puts("B = balance inquiry, D = deposit, W = withdraw");
+		puts("3rd argument should be transaction: B = balance inquiry, D = deposit, W = withdraw");
 		puts("4th argument should be the account number");
 		puts("5th argument should be value of deposit or withdraw in pennies");
 		return false;
