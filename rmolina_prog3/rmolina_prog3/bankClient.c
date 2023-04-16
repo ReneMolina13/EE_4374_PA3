@@ -24,6 +24,7 @@ typedef struct
 void *serverThread(void *param);
 bool connectToServer(connectionInfo *sockData);
 bool makeBankRequest(int, sBANK_PROTOCOL *bankTransaction);
+void makeThreads(int socket);
 
 // pthread attributes
 pthread_attr_t attr;
@@ -100,7 +101,7 @@ bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 }
 
 
-bool makeThreads()
+void makeThreads(int socket)
 {
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
@@ -110,7 +111,7 @@ bool makeThreads()
 	pthread_attr_init(&attr);
 	
 	for (int i = 0; i < numThreads; i++)
-		pthread_create(tid+i, &attr, serverThread, (void *) &(sockData.clientSocket));
+		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 // TESTING
 //**********************************************************************************
@@ -202,6 +203,8 @@ int main(int argc, char **argv)
 		puts("Original transaction completed: ");
 		puts("Creating a random number threads to make random bank transactions\n");
 //**********************************************************************************
+
+		makeThreads(sockData.clientSocket);
 	}
 	
 	// Close client socket
