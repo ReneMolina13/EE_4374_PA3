@@ -181,7 +181,7 @@ int main()
 			else if (bytesReceived == 0)
 				puts("No data received");
 			else
-				printf("Received %i bytes out of a possible %i", bytesReceived, sizeof(sBANK_PROTOCOL));
+				printf("Received %li bytes out of a possible %lu\n", bytesReceived, sizeof(sBANK_PROTOCOL));
 						
 // TESTING
 //**********************************************************************************
@@ -220,7 +220,7 @@ int main()
 			else if (bytesSent == 0)
 				puts("No data sent");
 			else
-				printf("Sent %i bytes out of a possible %i", bytesSent, sizeof(sBANK_PROTOCOL));
+				printf("Sent %li bytes out of a possible %lu\n", bytesSent, sizeof(sBANK_PROTOCOL));
 			
 // TESTING
 //**********************************************************************************
