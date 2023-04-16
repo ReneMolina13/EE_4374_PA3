@@ -70,13 +70,13 @@ bool handleClient(int clientSocket)
 	ssize_t bytesReceived;
 	bytesReceived = recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesReceived < 0) {
-		puts("Unable to receive request from client");
+		puts("\nUnable to receive request from client");
 		return false;
 	}
 	else if (bytesReceived == 0)
-		puts("No data received");
+		puts("\nNo data received");
 	else
-		printf("Received %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
+		printf("\nReceived %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
 				
 // TESTING
 //**********************************************************************************
