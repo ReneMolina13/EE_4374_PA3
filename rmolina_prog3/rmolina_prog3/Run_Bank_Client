@@ -1,3 +1,6 @@
 #! /bin/bash
 clear
 ./bankClient 10.9.0.1 26207 B 55 101015
+./bankClient 10.9.0.1 26207 B 99
+./bankClient 10.9.0.1 26207 D 2 56101015
+./bankClient 10.9.0.1 26207 W 46 8615
