@@ -163,7 +163,7 @@ int makeThreads(int socket)
 	printf("\nSocket closed status: %i", (int) socketClosed);
 	
 	for (int i = 0; i < numThreads; i++) {
-		printf("\n\nThread %i status: %i", i, **(threadStatuses + i));
+		printf("\n\nThread %i status: %i", i, **threadStatuses);
 		if (**threadStatuses < 0) {
 			transmissionError = true;
 			printf("\nThread %i status: transmission error", i);
@@ -172,13 +172,17 @@ int makeThreads(int socket)
 			socketClosed = true;
 			printf("\nThread %i status: socket closed", i);
 		}
-		free(*threadStatuses);
 		printf("\nLoop %i transmission error status: %i", i, (int) transmissionError);
 		printf("\nLoop %i socket closed status: %i", i, (int) socketClosed);
 		threadStatuses++;
 	}
+	
+	// Free pointers
 	threadStatuses -= numThreads;
+	for(int i = 0; i < numThreads; i++)
+		free(*(threadStatuses + i));
 	free(threadStatuses);
+	
 	
 	printf("\n\nTransmission error status: %i", (int) transmissionError);
 	printf("\n\nSocket closed status: %i", (int) socketClosed);
