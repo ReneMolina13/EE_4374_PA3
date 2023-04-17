@@ -158,8 +158,8 @@ int makeThreads(int socket)
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError = false;
 	bool socketClosed = false;
-	int *parameter = (int *) status
-	int threadStatus = *parameter
+	int *parameter = (int *) status;
+	int threadStatus = *parameter;
 	for (int i = 0; i < numThreads; i++) {
 		printf("\nThread %i status value: %i - ", i, threadStatus);
 		if (threadStatus < 0) {
