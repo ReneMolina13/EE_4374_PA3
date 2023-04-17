@@ -153,19 +153,19 @@ int makeThreads(int socket)
 		pthread_join(*(tid + i), (void **) &threadStatuses[i]);
 	}
 	
-	// Free array of tid structures
+	// Free array of tid structures and extract status values 
 	free(tid);
 	
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		printf("\nThread %i status value: %i - ", i, threadStatuses[i]);
-		if (threadStatuses[i] < 0) {
+		printf("\nThread %i status value: %i - ", i,(int) threadStatuses[i]);
+		if ((int) threadStatuses[i] < 0) {
 			transmissionError = true;
 			fputs("Transmission error", stdout);
 		}
-		else if (threadStatuses[i] == 0) {
+		else if ((int) threadStatuses[i] == 0) {
 			socketClosed = true;
 			fputs("Socket closed", stdout);
 		}
