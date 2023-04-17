@@ -165,7 +165,7 @@ int makeThreads(int socket)
 	for (int i = 0; i < numThreads; i++) {
 		printf("\n\nThread %i status: %i", i, **(threadStatuses + i));
 		if (**(threadStatuses + i) < 0) {
-			transmissionError = true;
+			// transmissionError = true;
 			printf("\nThread %i status: transmission error", i);
 		}
 		else if (**(threadStatuses + i) == 0) {
