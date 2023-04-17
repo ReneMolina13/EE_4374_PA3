@@ -187,6 +187,109 @@ int makeThreads(int socket)
 }
 
 
+bool newTransaction()
+{
+	// Ask if user wants to request another transaction
+	printf("Would you like to make another transaction? (y/n) ");
+	char c = getchar();
+	if (c != 'y' && c != 'Y')
+		return true;
+	
+	// Ask user for transaction type (to determine if value argument is needed)
+	printf("\nEnter in new transaction for bank server\n");
+	printf("Transaction (B = balance inquiry, D = deposit, W = withdraw): ");
+	int numArgs;
+	getchar();
+	c = getchar();
+	if (c == 'B' || c == 'b')
+		numArgs = 6;
+	else
+		numArgs = 7;
+	char **args = (char **) calloc(numArgs, sizeof(char *));
+	
+// TESTING
+//**********************************************************************************	
+	for (int i = 0; i < numArgs; i++)
+		args[i] = (char *) calloc(20, sizeof(char));
+//**********************************************************************************
+	
+	// Fill command line argument array with info from user
+	
+	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
+	// Filename
+	args[0] = "bankClient";	
+	argsAssigned++;
+	// IP Address
+	printf("IP address of the bank server: ");
+	argsAssigned += scanf("%20s", args[1]);	
+	// Port Number
+	printf("Port number of the bank server: ");
+	argsAssigned += scanf("%20s", args[2]);	
+	// Transaction
+	sprintf(args[3], "%c", c);
+	argsAssigned++;
+	// Account Number
+	printf("Account number: ");
+	argsAssigned += scanf("%20s", args[4]);	
+	// Check if transaction value argument is needed
+	if (numArgs == 7) {
+		// Transaction Value
+		printf("Value of the transaction in pennies: ");
+		argsAssigned += scanf("%20s", args[5]);
+		// End of arguments list
+		args[6] = NULL;	
+		argsAssigned ++;
+	}
+	else if (numArgs == 6) {
+		// End of arguments list
+		args[5] = NULL;	
+		argsAssigned++;
+	}
+	else {
+		fputs("Error with argument array size - ", stderr);
+		return false;
+	}
+	
+// TESTING	
+//**********************************************************************************
+	printf("Arguments assigned: %i\n", argsAssigned);
+//**********************************************************************************
+	
+	// Check to make sure all arguments successfully assigned
+	if (argsAssigned != numArgs) {
+		fputs("Error assigning command line arguments - ", stderr);
+		return false;
+	}
+	
+	// Fork process & call this program from command line
+	pid_t pid = fork();
+	if (pid < 0) {
+		fputs("Error forking process - ", stderr);
+		return false;
+	}
+	// Child process: Arguments are new transaction specified by user
+	else if (pid == 0) {
+		
+// TESTING	
+//**********************************************************************************
+		puts("Fork successful\n");
+//**********************************************************************************		
+
+		// execvp(args[0], args);
+		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45", NULL);	
+	}
+	// Parent frees pointer memory before exiting
+	else if (pid > 0) {
+		for (int i = 0; i < numArgs; i++) {			
+			free(args[i]);
+		}		
+		free(args);
+	}
+	
+	return true;
+}
+
+
 int main(int argc, char **argv)
 {	
 	// Input structures
@@ -248,7 +351,19 @@ int main(int argc, char **argv)
 // TESTING
 //**********************************************************************************
 	puts("Successfully closed socket\n");
+	puts("Asking user for new transaction:");
 //**********************************************************************************
+
+	// Ask user for next bank server transaction
+	if (newTransaction() == false) {
+		fputs("Unable to make requested transaction - ", stderr);
+		return -1;
+	}
+	
+// TESTING
+//**********************************************************************************
+	puts("Parent process terminating\n");
+//**********************************************************************************	
 	
 	// End process without waiting for child
 	return 0;

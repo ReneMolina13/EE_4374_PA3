@@ -21,6 +21,7 @@ bool parseCmdArgs(int, char **, NetInfo *, sBANK_PROTOCOL *);
 bool connectToServer(NetInfo *sockData);
 int makeBankRequest(int, sBANK_PROTOCOL *);
 int makeThreads(int);
+bool newTransaction();
 
 
 // pthread attributes
