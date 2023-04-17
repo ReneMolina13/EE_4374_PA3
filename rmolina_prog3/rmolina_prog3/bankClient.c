@@ -163,12 +163,13 @@ int makeThreads(int socket)
 		printf("Thread %i status value: %i - ", i, threadStatuses[i]);
 		if (threadStatuses[i] < 0) {
 			transmissionError = true;
-			fputs("Transmission error", stdout);
+			puts("Transmission error");
 		}
 		else if (threadStatuses[i] == 0) {
 			socketClosed = true;
-			fputs("Socket closed", stdout);
+			puts("Socket closed");
 		}
+		fputs("\n", stdout);
 	}	
 	
 	// Return value depends on type of error (if any)
