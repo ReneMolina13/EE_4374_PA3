@@ -150,7 +150,6 @@ int makeThreads(int socket)
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
 		pthread_join(*(tid + i), &status[i]);
-		threadStatuses[i] = (int *) status[i];
 	}
 	
 	// Free array of tid structures and extract status values 
@@ -160,6 +159,7 @@ int makeThreads(int socket)
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
+		threadStatuses[i] = (int *) status[i];
 		printf("\nThread %i status value: %i - ", i, *(threadStatuses[i]));
 		if (*(threadStatuses[i]) < 0) {
 			transmissionError = true;
