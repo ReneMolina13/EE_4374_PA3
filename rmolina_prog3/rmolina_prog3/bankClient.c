@@ -163,7 +163,7 @@ int makeThreads(int socket)
 	
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError, socketClosed = false;
-	for (int i = 0; i < numThreads, i++) {
+	for (int i = 0; i < numThreads; i++) {
 		if (*(threadStatuses[i]) < 0) {
 			transmissionError = true;
 		}
