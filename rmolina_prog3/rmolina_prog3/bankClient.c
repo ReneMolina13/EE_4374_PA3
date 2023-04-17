@@ -145,7 +145,7 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int threadStatuses[numThreads];
+	int **threadStatuses = (int **) malloc(numThreads * sizeof(int *);
 	void *status[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
@@ -159,8 +159,8 @@ int makeThreads(int socket)
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		int *temp = (int *) status[i];
-		threadStatuses[i] = *temp;
+		threadStatuses[i] = (int *) status[i];
+		
 		printf("\nThread %i status value: %i - ", i, threadStatuses[i]);
 		if (threadStatuses[i] < 0) {
 			transmissionError = true;
