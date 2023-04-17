@@ -16,6 +16,7 @@ void *serverThread(void *param)
 
 	int *parameter = (int *) param;
 	int clientSocket = *parameter;
+	int clientStatus = *(parameter+1);
 	
 	// Initialize bank protocol structure
 	sBANK_PROTOCOL randomRequest;
@@ -23,8 +24,8 @@ void *serverThread(void *param)
 	randomRequest.acctnum = rand() % 20;
 	randomRequest.value = rand();
 	
-	int status = makeBankRequest(clientSocket, &randomRequest);
-	pthread_exit((void *) &status);
+	int clientStatus = makeBankRequest(clientSocket, &randomRequest);
+	pthread_exit(0);
 }
 
 
@@ -142,14 +143,14 @@ int makeThreads(int socket)
 //**********************************************************************************
 
 	// Create the chosen number of threads
+	int socketStatus[2] = {socket, 1};
 	for (int i = 0; i < numThreads; i++)
-		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
+		pthread_create(tid+i, &attr, serverThread, (void *) socketStatus);
 
 	// Wait for all threads to terminate
-	void *status;
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
-		pthread_join(*(tid + i), &status);
+		pthread_join(*(tid + i), NULL);
 	}
 	
 	// Free array of tid structures and extract status values 
@@ -158,8 +159,6 @@ int makeThreads(int socket)
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError = false;
 	bool socketClosed = false;
-	int *parameter = (int *) status;
-	int threadStatus = *parameter;
 	for (int i = 0; i < numThreads; i++) {
 		printf("\nThread %i status value: %i - ", i, threadStatus);
 		if (threadStatus < 0) {
