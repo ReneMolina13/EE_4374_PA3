@@ -149,7 +149,7 @@ int makeThreads(int socket)
 	int threadStatuses[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// Initialize thread statuses to 1 (no errors)
-		**(threadStatuses + i) = 1;
+		threadStatuses[i] = 1;
 		// Pass a thread status to each thread (to act as a return value)
 		pthread_join(*(tid + i), (void **) &threadStatuses[i]);
 	}
