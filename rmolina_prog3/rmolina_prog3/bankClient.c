@@ -158,6 +158,7 @@ int makeThreads(int socket)
 	free(tid);
 	
 	// Check if any threads were unsuccessful with their bank transactions
+	// Simultaneously free pointer of thread statuses
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
@@ -170,13 +171,10 @@ int makeThreads(int socket)
 			printf("\nThread %i status: socket closed", i);
 		}
 		free(*(threadStatuses + i));
-	}
-	
-	// Free pointers
-	for(int i = 0; i < numThreads; i++);
-		
+	}	
 	free(threadStatuses);
 	
+	// Return value depends on type of error (if any)
 	if (transmissionError == true)
 		return -1;
 	else if (socketClosed == true)
