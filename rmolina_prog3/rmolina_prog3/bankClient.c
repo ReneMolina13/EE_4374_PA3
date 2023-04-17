@@ -209,7 +209,7 @@ int main(int argc, char **argv)
 	// Make the transaction specified by the terminal arguments
 	status = makeBankRequest(sockData.clientSocket, &mainRequest);
 	if (status < 0) {
-		fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
+		fputs("Original transaction failed due to transmission error - ", stderr);
 		return -1;
 	}
 	else if (status == 0) {
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 		status = makeThreads(sockData.clientSocket);
 		fputs("\n", stdout);
 		if (status < 0) {
-			fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
+			fputs("Thread transaction(s) failed due to transmission error - ", stderr);
 			return -1;
 		}
 		else if (status == 0)
