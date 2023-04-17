@@ -146,12 +146,12 @@ int makeThreads(int socket)
 
 	// Wait for all threads to terminate
 	int *threadStatuses[numThreads];
+	void *status[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
-		void *status = threadStatuses[i];
-		pthread_join(*(tid + i), &status);
-		threadStatuses[i] = (int *) status;
+		pthread_join(*(tid + i), &status[i]);
 	}
+	numThreads = status;
 	
 	// Free array of tid structures and extract status values 
 	free(tid);
