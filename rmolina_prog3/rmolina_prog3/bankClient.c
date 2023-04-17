@@ -24,7 +24,7 @@ void *serverThread(void *param)
 	randomRequest.acctnum = rand() % 20;
 	randomRequest.value = rand();
 	
-	int clientStatus = makeBankRequest(clientSocket, &randomRequest);
+	clientStatus = makeBankRequest(clientSocket, &randomRequest);
 	pthread_exit(0);
 }
 
