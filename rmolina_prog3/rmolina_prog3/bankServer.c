@@ -94,15 +94,13 @@ int handleClient(int clientSocket)
 //**********************************************************************************			
 	
 	// Perform requested transaction 
-	if (processTransaction(&clientRequest) == false) {
+	if (processTransaction(&clientRequest) == false)
 		puts("Unable to complete transaction");
-		puts("\n************************************************\n");
-		return 1;
-	}
+	else
+		puts("Transaction Completed");
 	
 // TESTING
 //**********************************************************************************
-	puts("Transaction Completed\n");
 	puts("Receipt for client: ");
 	printf("Transaction type (D=0, W=1, I=2): %i\n", clientRequest.trans);
 	printf("Account number: %i\n", clientRequest.acctnum);
