@@ -100,28 +100,22 @@ bool connectToServer(NetInfo *sockData)
 int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 {
 	// Send the requested transaction to the server
+	
 	ssize_t bytesSent;
 	bytesSent = send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
-	if (bytesSent < 0) {
-		puts("Unable to send request");
+	// Indicates transmission error
+	if (bytesSent < 0)
 		return -1;
-	}
-	else
-		printf("Sent %li bytes out of a possible %lu\n", bytesSent, sizeof(sBANK_PROTOCOL));
 	
 	// Receive the response from the server
 	ssize_t bytesReceived;
 	bytesReceived = recv(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
-	if (bytesReceived < 0) {
-		puts("Failed to get response from server");
+	// Indicates transmission error
+	if (bytesReceived < 0)
 		return -1;
-	}
-	else if (bytesReceived == 0) {
-		puts("Server has closed socket\n");
+	// Indicates that the server has closed the socket
+	else if (bytesReceived == 0)
 		return 0;
-	}
-	else
-		printf("Received %li bytes out of a possible %lu\n", bytesReceived, sizeof(sBANK_PROTOCOL));
 	
 	return 1;
 }
