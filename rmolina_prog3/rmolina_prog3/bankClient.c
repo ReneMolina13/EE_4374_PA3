@@ -152,6 +152,7 @@ int makeThreads(int socket)
 		// Pass a thread status to each thread (to act as a return value)
 		pthread_join(*(tid + i), NULL);
 	}
+	int threadStatus = socketStatus[1];
 	
 	// Free array of tid structures and extract status values 
 	free(tid);
