@@ -146,7 +146,8 @@ int makeThreads(int socket)
 	// Create the chosen number of threads
 	int socketStatus[numThreads][2];
 	for (int i = 0; i < numThreads; i++) {
-		socketStatus[i] = {socket, 2};
+		socketStatus[i][0] = socket;
+		socketStatus[i][1] = 2;
 		pthread_create(tid+i, &attr, serverThread, (void *) socketStatus[i]);
 	}
 	int threadStatus[numThreads];
