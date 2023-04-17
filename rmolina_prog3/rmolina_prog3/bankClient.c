@@ -149,7 +149,8 @@ int makeThreads(int socket)
 	// int *threadStatuses[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// threadStatuses[i] = (int *) malloc(sizeof(int));
-		pthread_join(*(tid + i), (void **) &threadStatuses[i]);
+		// pthread_join(*(tid + i), (void **) &threadStatuses[i]);
+		pthread_join(*(tid + i), NULL);
 	}
 	
 	// Free array of tid structures
