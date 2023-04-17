@@ -169,7 +169,8 @@ int makeThreads(int socket)
 			socketClosed = true;
 			puts("Socket closed");
 		}
-		fputs("\n", stdout);
+		else
+			fputs("\n", stdout);
 	}	
 	
 	// Return value depends on type of error (if any)
