@@ -160,17 +160,15 @@ int makeThreads(int socket)
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		printf("Thread %i status value: %i - ", i, threadStatuses[i]);
+		printf("\nThread %i status value: %i - ", i, threadStatuses[i]);
 		if (threadStatuses[i] < 0) {
 			transmissionError = true;
-			puts("Transmission error");
+			fputs("Transmission error", stdout);
 		}
 		else if (threadStatuses[i] == 0) {
 			socketClosed = true;
-			puts("Socket closed");
+			fputs("Socket closed", stdout);
 		}
-		else
-			fputs("\n", stdout);
 	}	
 	
 	// Return value depends on type of error (if any)
