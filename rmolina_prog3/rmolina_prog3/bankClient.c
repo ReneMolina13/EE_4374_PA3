@@ -187,7 +187,7 @@ int makeThreads(int socket)
 }
 
 
-bool newTransaction()
+bool newTransaction(NetInfo *sockData)
 {
 	// Ask if user wants to request another transaction
 	printf("Would you like to make another transaction? (y/n) ");
@@ -219,12 +219,16 @@ bool newTransaction()
 	// Filename
 	args[0] = "bankClient";	
 	argsAssigned++;
+	
+	sockData->cmdIP = *(argv + 1);
+	sockData->cmdPort = atoi(*(argv + 2));
+	
 	// IP Address
-	printf("IP address of the bank server: ");
-	argsAssigned += scanf("%20s", args[1]);	
+	args[1] = sockData->cmdIP;
+	argsAssigned++;
 	// Port Number
-	printf("Port number of the bank server: ");
-	argsAssigned += scanf("%20s", args[2]);	
+	args[2] = sprintf(args[2], "%u", sockData->cmdPort);
+	argsAssigned++;
 	// Transaction
 	sprintf(args[3], "%c", c);
 	argsAssigned++;
@@ -355,7 +359,7 @@ int main(int argc, char **argv)
 //**********************************************************************************
 
 	// Ask user for next bank server transaction
-	if (newTransaction() == false) {
+	if (newTransaction(&sockData) == false) {
 		fputs("Unable to make requested transaction - ", stderr);
 		return -1;
 	}
