@@ -7,6 +7,9 @@
 
 // Number of bank accounts
 #define NUM_ACCTS 100
+// Communication error values
+#define TRANSMISSION_ERROR	-1
+#define INVALID_TRANSACTION	-2
 
 
 // Server-side banking information
@@ -19,7 +22,7 @@ typedef struct
 
 // Function Prototypes
 int initBank(struct sockaddr_in *);
-bool handleClient(int clientSocket);
+int handleClient(int clientSocket);
 bool processTransaction();
 
 

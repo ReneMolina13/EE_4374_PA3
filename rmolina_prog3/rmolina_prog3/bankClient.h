@@ -19,7 +19,7 @@ typedef struct
 void *serverThread(void *);
 bool parseCmdArgs(int, char **, NetInfo *, sBANK_PROTOCOL *);
 bool connectToServer(NetInfo *sockData);
-bool makeBankRequest(int, sBANK_PROTOCOL *);
+int makeBankRequest(int, sBANK_PROTOCOL *);
 void makeThreads(int);
 
 
