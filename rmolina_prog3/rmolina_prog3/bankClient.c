@@ -138,7 +138,7 @@ int makeThreads(int socket)
 // TESTING
 //**********************************************************************************
 	printf("%i threads will be created\n\n", numThreads);
-	printf("Thread Count: ");
+	fputs("Thread Count: ", stdout);
 //**********************************************************************************
 
 	// Create the chosen number of threads
@@ -146,15 +146,15 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int *threadStatuses[numThreads];
+	// int *threadStatuses[numThreads];
 	for (int i = 0; i < numThreads; i++) {
-		threadStatuses[i] = (int *) malloc(sizeof(int));
+		// threadStatuses[i] = (int *) malloc(sizeof(int));
 		pthread_join(*(tid + i), (void **) &threadStatuses[i]);
 	}
 	
 	// Free array of tid structures
 	free(tid);
-	
+	/*
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError, socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
@@ -175,6 +175,9 @@ int makeThreads(int socket)
 		puts("\n\nAll threads have terminated successfully\n");
 		return 1;
 	}
+	*/
+	
+	return 1;
 }
 
 
