@@ -132,13 +132,13 @@ int makeThreads(int socket)
 	srand(time(NULL));
 	// int numThreads = (rand() % 100) + 1;
 	int numThreads = 4;
-	tid = malloc(numThreads * sizeof(pthread_t));
+	tid = (pthread_t *) malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
 // TESTING
 //**********************************************************************************
 	printf("%i threads will be created\n\n", numThreads);
-	fputs("Thread Count: ", stdout);
+	printf("Thread Count: ");
 //**********************************************************************************
 
 	// Create the chosen number of threads
