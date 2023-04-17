@@ -178,8 +178,8 @@ int makeThreads(int socket)
 	}
 	free(threadStatuses);
 	
-	printf("\nTransmission error status: %i", (int) transmissionError);
-	printf("\nSocket closed status: %i", (int) socketClosed);
+	printf("\n\nTransmission error status: %i", (int) transmissionError);
+	printf("\n\nSocket closed status: %i", (int) socketClosed);
 	
 	if (transmissionError == true)
 		return -1;
