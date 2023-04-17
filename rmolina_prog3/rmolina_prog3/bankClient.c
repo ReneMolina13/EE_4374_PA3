@@ -219,10 +219,6 @@ bool newTransaction(NetInfo *sockData)
 	// Filename
 	args[0] = "bankClient";	
 	argsAssigned++;
-	
-	sockData->cmdIP = *(argv + 1);
-	sockData->cmdPort = atoi(*(argv + 2));
-	
 	// IP Address
 	args[1] = sockData->cmdIP;
 	argsAssigned++;
