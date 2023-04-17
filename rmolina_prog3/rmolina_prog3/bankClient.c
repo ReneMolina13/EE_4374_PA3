@@ -171,6 +171,7 @@ int makeThreads(int socket)
 			fputs("Socket closed", stdout);
 		}
 	}	
+	free(threadStatuses);
 	
 	// Return value depends on type of error (if any)
 	if (transmissionError == true)
