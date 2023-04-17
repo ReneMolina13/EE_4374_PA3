@@ -207,12 +207,12 @@ bool newTransaction(NetInfo *sockData)
 		numArgs = 7;
 	
 	// Create argument array
-	char *args[numArgs] = malloc(20 * sizeof(char[numArgs]));
+	char args[numArgs][20];
 	
 // TESTING
 //**********************************************************************************	
-	// for (int i = 0; i < numArgs; i++)
-		// args[i] = (char *) calloc(20, sizeof(char));
+	for (int i = 0; i < numArgs; i++)
+		args[i] = (char *) calloc(20, sizeof(char));
 //**********************************************************************************
 	
 	// Fill command line argument array with info from user
@@ -281,17 +281,13 @@ bool newTransaction(NetInfo *sockData)
 		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45", NULL);	
 	}
 	
-	/*
 	// Parent frees pointer memory before exiting
 	else if (pid > 0) {
 		for (int i = 0; i < numArgs; i++) {			
 			free(args[i]);
 		}		
-		free(args);
+		// free(args);
 	}
-	*/
-	
-	free(args);
 	
 	return true;
 }
