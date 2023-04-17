@@ -23,8 +23,8 @@ void *serverThread(void *param)
 	randomRequest.acctnum = rand() % 100;
 	randomRequest.value = rand();
 	
-	makeBankRequest(clientSocket, &randomRequest);
-	pthread_exit(0);
+	int status = makeBankRequest(clientSocket, &randomRequest);
+	pthread_exit((void *) &status);
 }
 
 
@@ -152,14 +152,29 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
+	int *threadStatuses[numThreads] = calloc(numThreads, sizeof(int *));
 	for (int i = 0; i < numThreads; i++)
-		pthread_join(*(tid+i), NULL);
+		pthread_join(*(tid+i), (void **) &threadStatuses[i]);
 	free(tid);
+	
+	// Check if any threads were unsuccessful with their bank transactions
+	for (int i = 0; i < numThreads, i++) {
+		switch(*(threadStatuses[i])) {
+		// Transmission error
+		case -1:
+			return -1;
+		// Socket closed by server
+		case 0:
+			return 0;
+		}
+	}
 	
 // TESTING
 //**********************************************************************************
 	puts("\n\nAll threads have terminated successfully\n");
 //**********************************************************************************
+
+	return 1;
 }
 
 
