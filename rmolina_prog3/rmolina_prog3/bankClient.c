@@ -211,33 +211,55 @@ bool newTransaction(NetInfo *sockData)
 	
 // TESTING
 //**********************************************************************************	
-	for (int i = 0; i < numArgs; i++)
-		args[i] = (char *) calloc(20, sizeof(char));
+	// for (int i = 0; i < numArgs; i++)
+		// args[i] = (char *) calloc(20, sizeof(char));
 //**********************************************************************************
 	
 	// Fill command line argument array with info from user
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
+	int index;	// Index used for assignment of each argument
 	// Filename
-	args[0] = "bankClient";
+	char[] temp1 = "bankClient";
+	for (index = 0; temp1[index] != '\0'; index++)
+		args[0][index] = temp1[index];
+	args[0][index] = '\0';
 	argsAssigned++;
 	// IP Address
 	args[1] = sockData->cmdIP;
+	for (index = 0; sockData->cmdIP[index] != '\n'; index++)
+		args[1][index] = sockData->cmdIP[index];
+	args[1][index] = '\0';
 	argsAssigned++;
 	// Port Number
-	sprintf(args[2], "%u", sockData->cmdPort);
+	char[20] temp2;
+	sprintf(temp2, "%u", sockData->cmdPort);
+	for (index = 0; temp2[index] != '\0'; index++)
+		args[2][index] = temp2[index];
+	args[2][index] = '\0';
 	argsAssigned++;
 	// Transaction
-	sprintf(args[3], "%c", c);
+	args[3][0] = c;
+	args[3][1] = '\0';
 	argsAssigned++;
 	// Account Number
+	char[20] temp3;
 	printf("Account number: ");
-	argsAssigned += scanf("%20s", args[4]);	
+	scanf("%20s", temp3);
+	for (index = 0; temp3[index] != '\0'; index++)
+		args[4][index] = temp3[index];
+	args[4][index] = '\0';
+	argsAssigned++;
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
 		// Transaction Value
+		char[20] temp4;
 		printf("Value of the transaction in pennies: ");
-		argsAssigned += scanf("%20s", args[5]);
+		scanf("%20s", temp4);
+		for (index = 0; temp4[index] != '\0'; index++)
+			args[5][index] = temp4[index];
+		args[5][index] = '\0';
+		argsAssigned++;
 		// End of arguments list
 		args[6] = NULL;	
 		argsAssigned ++;
@@ -281,13 +303,15 @@ bool newTransaction(NetInfo *sockData)
 		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45", NULL);	
 	}
 	
+	/*
 	// Parent frees pointer memory before exiting
 	else if (pid > 0) {
 		for (int i = 0; i < numArgs; i++) {			
 			free(args[i]);
 		}		
-		// free(args);
+		free(args);
 	}
+	*/
 	
 	return true;
 }
