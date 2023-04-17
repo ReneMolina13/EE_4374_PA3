@@ -223,7 +223,7 @@ bool newTransaction(NetInfo *sockData)
 	args[1] = sockData->cmdIP;
 	argsAssigned++;
 	// Port Number
-	args[2] = sprintf(args[2], "%u", sockData->cmdPort);
+	sprintf(args[2], "%u", sockData->cmdPort);
 	argsAssigned++;
 	// Transaction
 	sprintf(args[3], "%c", c);
