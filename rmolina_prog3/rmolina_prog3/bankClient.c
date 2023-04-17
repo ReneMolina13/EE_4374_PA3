@@ -24,7 +24,7 @@ void *serverThread(void *param)
 	randomRequest.value = rand();
 	
 	int status = makeBankRequest(clientSocket, &randomRequest);
-	pthread_exit((void *) &status);
+	pthread_exit((void *) status);
 }
 
 
@@ -160,12 +160,12 @@ int makeThreads(int socket)
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		printf("\nThread %i status value: %i - ", i,(int) *threadStatuses[i]);
-		if ((int) *threadStatuses[i] < 0) {
+		printf("\nThread %i status value: %i - ", i, threadStatuses[i]);
+		if (threadStatuses[i] < 0) {
 			transmissionError = true;
 			fputs("Transmission error", stdout);
 		}
-		else if ((int) *threadStatuses[i] == 0) {
+		else if (threadStatuses[i] == 0) {
 			socketClosed = true;
 			fputs("Socket closed", stdout);
 		}
