@@ -159,7 +159,7 @@ int makeThreads(int socket)
 	}
 	
 	// Free array of tid structures
-	free(tid)
+	free(tid);
 	
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError, socketClosed = false;
