@@ -78,7 +78,7 @@ int handleClient(int clientSocket)
 		return -1;
 	}
 	else if (bytesReceived == 0) {
-		puts("Client has closed socket\n");
+		puts("Client has closed socket");
 		puts("\n************************************************\n");
 		return 0;
 	}
@@ -240,11 +240,19 @@ int main()
 	
 // TESTING
 //**********************************************************************************
-		puts("Successfully closed client socket\n");
-//**********************************************************************************		
-}
+		puts("Successfully closed client socket");
+		puts("\n************************************************\n");
+		fputs("Would you like to disconnect the server? (y/n): ", stdout);
+		if (getchar() == 'y') {
+			break;
+		}
+		else
+			puts("\n************************************************\n");
 		
-	// Close server socket (never reached)
+//**********************************************************************************
+	}
+		
+	// Close server socket
 	if (close(serverSocket) < 0) {
 		fputs("Unable to properly close server socket - ", stderr);
 		return -1;
