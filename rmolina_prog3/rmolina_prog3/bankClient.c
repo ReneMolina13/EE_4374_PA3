@@ -158,7 +158,8 @@ int makeThreads(int socket)
 	free(tid);
 	
 	// Check if any threads were unsuccessful with their bank transactions
-	bool transmissionError, socketClosed = false;
+	bool transmissionError = false;
+	bool socketClosed = false;
 	printf("\nTransmission error status: %i", (int) transmissionError);
 	printf("\nSocket closed status: %i", (int) socketClosed);
 	
