@@ -75,12 +75,12 @@ int handleClient(int clientSocket)
 	if (bytesReceived < 0) {
 		puts("Unable to receive request from client");
 		puts("\n************************************************\n");
-		return TRANSMISSION_ERROR;
+		return -1;
 	}
 	else if (bytesReceived == 0) {
 		puts("Client has closed socket");
 		puts("\n************************************************\n");
-		return SOCKET_CLOSED;
+		return 0;
 	}
 	else
 		printf("Received %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
@@ -95,8 +95,9 @@ int handleClient(int clientSocket)
 	
 	// Perform requested transaction 
 	if (processTransaction(&clientRequest) == false) {
-		puts("Unable to complete transaction\n");
-		return INVALID_TRANSACTION;
+		puts("Unable to complete transaction");
+		puts("\n************************************************\n");
+		return 1;
 	}
 	
 // TESTING
@@ -114,7 +115,7 @@ int handleClient(int clientSocket)
 	if (bytesSent < 0) {
 		puts("Unable to confirm completion of request to client");
 		puts("\n************************************************\n");
-		return TRANSMISSION_ERROR;
+		return -1;
 	}
 	else
 		printf("Sent %li bytes out of a possible %lu\n", bytesSent, sizeof(sBANK_PROTOCOL));
@@ -125,7 +126,7 @@ int handleClient(int clientSocket)
 	puts("\n************************************************\n");
 //**********************************************************************************
 
-	return TRANSACTION_SUCCESSFUL;
+	return 1;
 }
 
 
@@ -222,10 +223,7 @@ int main()
 			status = handleClient(clientSocket);
 			if (status < 0) {
 				fputs("Unable to handle client request - ", stderr);
-				if (status == TRANSMISSION_ERROR)
-					return -1;
-				else if (status == INVALID_TRANSACTION)
-					break;
+				return TRANSMISSION_ERROR;
 			}
 			else if (status == 0) {
 				puts("Socket in close-wait state: Initiating close handshake");
@@ -243,7 +241,6 @@ int main()
 //**********************************************************************************
 		puts("Successfully closed client socket");
 		puts("\n************************************************\n");
-		
 //**********************************************************************************
 	}
 		
