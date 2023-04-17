@@ -7,11 +7,6 @@
 
 // Number of bank accounts
 #define NUM_ACCTS 100
-// Communication error values
-#define TRANSACTION_SUCCESSFUL	1
-#define SOCKET_CLOSED			0
-#define TRANSMISSION_ERROR		-1
-#define INVALID_TRANSACTION		-2
 
 
 // Server-side banking information

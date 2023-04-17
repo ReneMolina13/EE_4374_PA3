@@ -223,7 +223,7 @@ int main()
 			status = handleClient(clientSocket);
 			if (status < 0) {
 				fputs("Unable to handle client request - ", stderr);
-				return TRANSMISSION_ERROR;
+				return -1;
 			}
 			else if (status == 0) {
 				puts("Socket in close-wait state: Initiating close handshake");
