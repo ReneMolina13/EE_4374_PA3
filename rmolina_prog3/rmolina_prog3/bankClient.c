@@ -146,34 +146,30 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int **threadStatuses = (int **) malloc(numThreads * sizeof(int *));
+	int threadStatuses[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// Initialize thread statuses to 1 (no errors)
-		*(threadStatuses + i) = (int *) malloc(sizeof(int));
 		**(threadStatuses + i) = 1;
 		// Pass a thread status to each thread (to act as a return value)
-		pthread_join(*(tid + i), (void **) *(threadStatuses + i));
+		pthread_join(*(tid + i), (void **) &threadStatuses[i]);
 	}
 	
 	// Free array of tid structures
 	free(tid);
 	
 	// Check if any threads were unsuccessful with their bank transactions
-	// Simultaneously free pointer of thread statuses
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		if (**(threadStatuses + i) < 0) {
+		if (threadStatuses[i] < 0) {
 			transmissionError = true;
 			printf("\nThread %i status: transmission error", i);
 		}
-		else if (**(threadStatuses + i) == 0) {
+		else if (threadStatuses[i] == 0) {
 			socketClosed = true;
 			printf("\nThread %i status: socket closed", i);
 		}
-		free(*(threadStatuses + i));
 	}	
-	free(threadStatuses);
 	
 	// Return value depends on type of error (if any)
 	if (transmissionError == true)
