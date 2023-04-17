@@ -145,7 +145,7 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int **threadStatuses = (int **) malloc(numThreads * sizeof(int *);
+	int **threadStatuses = (int **) malloc(numThreads * sizeof(int *));
 	void *status[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
