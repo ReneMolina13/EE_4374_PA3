@@ -152,29 +152,35 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int *threadStatuses[numThreads] = calloc(numThreads, sizeof(int *));
-	for (int i = 0; i < numThreads; i++)
-		pthread_join(*(tid+i), (void **) &threadStatuses[i]);
-	free(tid);
-	
-	// Check if any threads were unsuccessful with their bank transactions
-	for (int i = 0; i < numThreads, i++) {
-		switch(*(threadStatuses[i])) {
-		// Transmission error
-		case -1:
-			return -1;
-		// Socket closed by server
-		case 0:
-			return 0;
-		}
+	int *threadStatuses[numThreads];
+	for (int i = 0; i < numThreads; i++) {
+		threadStatuses[i] = (int *) malloc(sizeof(int));
+		pthread_join(*(tid + i), (void **) &threadStatuses[i]);
 	}
 	
-// TESTING
-//**********************************************************************************
-	puts("\n\nAll threads have terminated successfully\n");
-//**********************************************************************************
-
-	return 1;
+	// Free array of tid structures
+	free(tid)
+	
+	// Check if any threads were unsuccessful with their bank transactions
+	bool transmissionError, socketClosed = false;
+	for (int i = 0; i < numThreads, i++) {
+		if (*(threadStatuses[i]) < 0) {
+			transmissionError = true;
+		}
+		else if (*(threadStatuses[i]) == 0) {
+			socketClosed = true;
+		}
+		free(threadStatuses[i]);
+	}
+	
+	if (transmissionError == true)
+		return -1;
+	else if (socketClosed == true)
+		return 0;
+	else {
+		puts("\n\nAll threads have terminated successfully\n");
+		return 1;
+	}
 }
 
 
