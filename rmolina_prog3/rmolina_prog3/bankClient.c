@@ -130,8 +130,7 @@ int makeThreads(int socket)
 	
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
-	// int numThreads = (rand() % 100) + 1;
-	int numThreads = 4;
+	int numThreads = (rand() % 100) + 1;
 	tid = (pthread_t *) malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
