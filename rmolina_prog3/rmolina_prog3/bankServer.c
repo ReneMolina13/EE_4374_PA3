@@ -66,7 +66,7 @@ int initBank(struct sockaddr_in *serverAddr)
 
 
 // Handle Client
-bool handleClient(int clientSocket)
+int handleClient(int clientSocket)
 {
 	// Receive request from client
 	sBANK_PROTOCOL clientRequest;
@@ -74,10 +74,14 @@ bool handleClient(int clientSocket)
 	bytesReceived = recv(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesReceived < 0) {
 		puts("Unable to receive request from client");
-		return false;
+		puts("\n************************************************\n");
+		return -1;
 	}
-	else if (bytesReceived == 0)
-		puts("No data received\n");
+	else if (bytesReceived == 0) {
+		puts("Client has closed socket\n");
+		puts("\n************************************************\n");
+		return 0;
+	}
 	else
 		printf("Received %li bytes out of a possible %lu\n\n", bytesReceived, sizeof(sBANK_PROTOCOL));
 				
@@ -92,7 +96,7 @@ bool handleClient(int clientSocket)
 	// Perform requested transaction 
 	if (processTransaction(&clientRequest) == false) {
 		puts("Unable to complete transaction\n");
-		return false;
+		return -1;
 	}
 	
 // TESTING
@@ -109,10 +113,9 @@ bool handleClient(int clientSocket)
 	bytesSent = send(clientSocket, &clientRequest, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesSent < 0) {
 		puts("Unable to confirm completion of request to client");
-		return false;
+		puts("\n************************************************\n");
+		return -1;
 	}
-	else if (bytesSent == 0)
-		puts("No data sent");
 	else
 		printf("Sent %li bytes out of a possible %lu\n", bytesSent, sizeof(sBANK_PROTOCOL));
 	
@@ -122,7 +125,7 @@ bool handleClient(int clientSocket)
 	puts("\n************************************************\n");
 //**********************************************************************************
 
-	return true;
+	return 1;
 }
 
 
@@ -212,14 +215,36 @@ int main()
 		puts("\n************************************************\n");
 //**********************************************************************************		
 		
-		while (1)
-			if (handleClient(clientSocket) == false); {
+		// Handle requests until client ends connection
+		int status;
+		while (1) {
+			status = handleClient(clientSocket);
+			if (status < 0) {
 				fputs("Unable to handle client request - ", stderr);
-				return -1;
+				if (status == TRANSMISSION_ERROR)
+					return -1;
+				else if (status == INVALID_TRANSACTION)
+					break;
 			}
+			else if (status == 0) {
+				puts("Socket in close-wait state: Initiating close handshake");
+				break;
+			}
+		}
+		
+		// Close client socket
+		if (close(clientSocket) < 0) {
+			fputs("Unable to properly close client socket - ", stderr);
+			return -1;
+		}
+	
+// TESTING
+//**********************************************************************************
+		puts("Successfully closed client socket\n");
+//**********************************************************************************		
 }
 		
-	// Close server socket
+	// Close server socket (never reached)
 	if (close(serverSocket) < 0) {
 		fputs("Unable to properly close server socket - ", stderr);
 		return -1;

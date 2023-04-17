@@ -97,17 +97,15 @@ bool connectToServer(NetInfo *sockData)
 }
 
 
-bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
+int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 {
 	// Send the requested transaction to the server
 	ssize_t bytesSent;
 	bytesSent = send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesSent < 0) {
 		puts("Unable to send request");
-		return false;
+		return -1;
 	}
-	else if (bytesSent == 0)
-		puts("No data sent");
 	else
 		printf("Sent %li bytes out of a possible %lu\n", bytesSent, sizeof(sBANK_PROTOCOL));
 	
@@ -116,14 +114,16 @@ bool makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 	bytesReceived = recv(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
 	if (bytesReceived < 0) {
 		puts("Failed to get response from server");
-		return false;
+		return -1;
 	}
-	else if (bytesReceived == 0)
-		puts("No data received");
+	else if (bytesReceived == 0) {
+		puts("Server has closed socket\n");
+		return 0;
+	}
 	else
 		printf("Received %li bytes out of a possible %lu\n", bytesReceived, sizeof(sBANK_PROTOCOL));
 	
-	return true;
+	return 1;
 }
 
 
@@ -186,6 +186,8 @@ int main(int argc, char **argv)
 	puts("Making original transaction\n");
 //**********************************************************************************
 	
+	// Status of bank transaction
+	int status;
 	for (int iteration = 0; iteration < 10; iteration++) {
 // TESTING
 //**********************************************************************************
@@ -193,9 +195,14 @@ int main(int argc, char **argv)
 //**********************************************************************************
 		
 		// Make the transaction specified by the terminal arguments
-		if (makeBankRequest(sockData.clientSocket, &mainRequest) == false) {
+		status = makeBankRequest(sockData.clientSocket, &mainRequest);
+		if (status < 0) {
 			fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
 			return -1;
+		}
+		else if (status == 0) {
+			puts("Socket in close-wait state: Initiating close handshake");
+			break;
 		}
 		
 // TESTING
@@ -209,13 +216,13 @@ int main(int argc, char **argv)
 	
 	// Close client socket
 	if (close(sockData.clientSocket) < 0) {
-		fputs("Failed to properly close client socket - ", stderr);
+		fputs("Failed to properly close socket - ", stderr);
 		return -1;
 	}
 	
 // TESTING
 //**********************************************************************************
-	puts("Client socket closed\n");
+	puts("Successfully closed socket\n");
 //**********************************************************************************
 	
 	// End process without waiting for child
