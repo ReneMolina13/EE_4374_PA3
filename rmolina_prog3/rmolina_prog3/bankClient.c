@@ -24,7 +24,7 @@ void *serverThread(void *param)
 	randomRequest.value = rand();
 	
 	int status = makeBankRequest(clientSocket, &randomRequest);
-	pthread_exit((void *) status);
+	pthread_exit((void *) &status);
 }
 
 
@@ -145,7 +145,7 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int threadStatuses[numThreads];
+	int *threadStatuses[numThreads];
 	for (int i = 0; i < numThreads; i++) {
 		// Initialize thread statuses to 1 (no errors)
 		threadStatuses[i] = 1;
