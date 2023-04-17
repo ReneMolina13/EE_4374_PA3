@@ -86,6 +86,7 @@ int handleClient(int clientSocket)
 	else if (bytesReceived == 0) {
 		puts("Client has closed socket");
 		puts("\n************************************************\n");
+		transactionNum = 0;
 		return 0;
 	}
 	else
