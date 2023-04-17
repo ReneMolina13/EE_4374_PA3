@@ -127,11 +127,11 @@ int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 }
 
 
-void makeThreads(int socket)
+int makeThreads(int socket)
 {
 // TESTING
 //**********************************************************************************
-	puts("Creating a random number threads to make random bank transactions\n");
+	puts("Creating a random number of threads to make random bank transactions");
 //**********************************************************************************
 	
 	// Create between 0 and 100 threads to make random bank server requests
@@ -141,14 +141,15 @@ void makeThreads(int socket)
 	tid = malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
-	for (int i = 0; i < numThreads; i++)
-		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
-
 // TESTING
 //**********************************************************************************
-	printf("All %i threads have been created\n\n", numThreads);
+	printf("%i threads will be created\n\n", numThreads);
+	fputs("Thread Count: ", stdout);
 //**********************************************************************************
 
+	// Create the chosen number of threads
+	for (int i = 0; i < numThreads; i++)
+		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
 	for (int i = 0; i < numThreads; i++)
@@ -157,7 +158,7 @@ void makeThreads(int socket)
 	
 // TESTING
 //**********************************************************************************
-	puts("\n\nAll threads have terminated\n");
+	puts("\n\nAll threads have terminated successfully\n");
 //**********************************************************************************
 }
 
@@ -188,30 +189,29 @@ int main(int argc, char **argv)
 	
 	// Status of bank transaction
 	int status;
-	for (int iteration = 0; iteration < 10; iteration++) {
-// TESTING
-//**********************************************************************************
-		printf("Iteration number: %i\n", iteration);
-//**********************************************************************************
-		
-		// Make the transaction specified by the terminal arguments
-		status = makeBankRequest(sockData.clientSocket, &mainRequest);
+	
+	// Make the transaction specified by the terminal arguments
+	status = makeBankRequest(sockData.clientSocket, &mainRequest);
+	if (status < 0) {
+		fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
+		return -1;
+	}
+	else if (status == 0) {
+		puts("Socket in close-wait state: Initiating close handshake");
+	}
+	else {
+		puts("Original transaction completed\n");
+
+		// Create threads that make random transactions with bank server
+		status = makeThreads(sockData.clientSocket);
 		if (status < 0) {
 			fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
 			return -1;
 		}
-		else if (status == 0) {
+		else if (status == 0)
 			puts("Socket in close-wait state: Initiating close handshake");
-			break;
-		}
-		
-// TESTING
-//**********************************************************************************
-		puts("Original transaction completed\n");
-//**********************************************************************************
-		
-		// Make threads to make random transactions with bank server
-		// makeThreads(sockData.clientSocket);
+		else
+			puts("Bank transactions made by all threads were successful");
 	}
 	
 	// Close client socket

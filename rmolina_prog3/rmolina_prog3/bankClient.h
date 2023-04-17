@@ -20,7 +20,7 @@ void *serverThread(void *);
 bool parseCmdArgs(int, char **, NetInfo *, sBANK_PROTOCOL *);
 bool connectToServer(NetInfo *sockData);
 int makeBankRequest(int, sBANK_PROTOCOL *);
-void makeThreads(int);
+int makeThreads(int);
 
 
 // pthread attributes

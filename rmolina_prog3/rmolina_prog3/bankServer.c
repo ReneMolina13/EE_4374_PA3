@@ -177,6 +177,7 @@ bool processTransaction(sBANK_PROTOCOL *request)
 	return success;
 }
 
+
 int main()
 {	
 // TESTING
