@@ -1,6 +1,12 @@
 #include "bankServer.h"
 
 
+// TESTING
+//**********************************************************************************
+int transactionNum = 0;
+//**********************************************************************************
+
+
 // Initialize bank server
 int initBank(struct sockaddr_in *serverAddr)
 {
@@ -68,6 +74,11 @@ int initBank(struct sockaddr_in *serverAddr)
 // Handle Client
 int handleClient(int clientSocket)
 {
+// TESTING
+//**********************************************************************************
+	printf("Transaction Number: %i", transactionNum++);
+//**********************************************************************************
+	
 	// Receive request from client
 	sBANK_PROTOCOL clientRequest;
 	ssize_t bytesReceived;
