@@ -130,7 +130,8 @@ int makeThreads(int socket)
 	
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
-	int numThreads = (rand() % 100) + 1;
+	// int numThreads = (rand() % 100) + 1;
+	int numThreads = 1;
 	tid = (pthread_t *) malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
@@ -145,11 +146,10 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	int **threadStatuses = (int **) malloc(numThreads * sizeof(int *));
-	void *status[numThreads];
+	void *status;
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
-		pthread_join(*(tid + i), &status[i]);
+		pthread_join(*(tid + i), &status);
 	}
 	
 	// Free array of tid structures and extract status values 
@@ -159,19 +159,16 @@ int makeThreads(int socket)
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		threadStatuses[i] = (int *) status[i];
-		
-		printf("\nThread %i status value: %i - ", i, threadStatuses[i][0]);
-		if (threadStatuses[i][0] < 0) {
+		printf("\nThread %i status value: %i - ", i, (int) *status);
+		if ((int) *status < 0) {
 			transmissionError = true;
 			fputs("Transmission error", stdout);
 		}
-		else if (threadStatuses[i][0] == 0) {
+		else if ((int) *status == 0) {
 			socketClosed = true;
 			fputs("Socket closed", stdout);
 		}
 	}	
-	free(threadStatuses);
 	
 	// Return value depends on type of error (if any)
 	if (transmissionError == true)
