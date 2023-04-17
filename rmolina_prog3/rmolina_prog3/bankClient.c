@@ -144,16 +144,18 @@ int makeThreads(int socket)
 //**********************************************************************************
 
 	// Create the chosen number of threads
-	int socketStatus[2] = {socket, 2};
-	for (int i = 0; i < numThreads; i++)
-		pthread_create(tid+i, &attr, serverThread, (void *) socketStatus);
-
+	int socketStatus[numThreads][2];
+	for (int i = 0; i < numThreads; i++) {
+		socketStatus[i] = {socket, 2}
+		pthread_create(tid+i, &attr, serverThread, (void *) socketStatus[i]);
+	}
+	int threadStatus[numThreads];
 	// Wait for all threads to terminate
 	for (int i = 0; i < numThreads; i++) {
 		// Pass a thread status to each thread (to act as a return value)
 		pthread_join(*(tid + i), NULL);
+		threadStatus[i] = socketStatus[i][1];
 	}
-	int threadStatus = socketStatus[1];
 	
 	// Free array of tid structures and extract status values 
 	free(tid);
@@ -162,12 +164,12 @@ int makeThreads(int socket)
 	bool transmissionError = false;
 	bool socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
-		printf("\nThread %i status value: %i - ", i, threadStatus);
-		if (threadStatus < 0) {
+		printf("\nThread %i status value: %i - ", i, threadStatus[i]);
+		if (threadStatus[i] < 0) {
 			transmissionError = true;
 			fputs("Transmission error", stdout);
 		}
-		else if (threadStatus == 0) {
+		else if (threadStatus[i] == 0) {
 			socketClosed = true;
 			fputs("Socket closed", stdout);
 		}
