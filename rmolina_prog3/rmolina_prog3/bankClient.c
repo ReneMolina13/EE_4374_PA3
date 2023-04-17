@@ -169,11 +169,12 @@ int makeThreads(int socket)
 			socketClosed = true;
 			printf("\nThread %i status: socket closed", i);
 		}
+		free(*(threadStatuses + i));
 	}
 	
 	// Free pointers
-	for(int i = 0; i < numThreads; i++)
-		free(*(threadStatuses + i));
+	for(int i = 0; i < numThreads; i++);
+		
 	free(threadStatuses);
 	
 	if (transmissionError == true)
@@ -181,7 +182,7 @@ int makeThreads(int socket)
 	else if (socketClosed == true)
 		return 0;
 	else {
-		puts("\n\nAll threads have terminated successfully\n");
+		puts("\n\nAll threads have terminated successfully");
 		return 1;
 	}
 }
