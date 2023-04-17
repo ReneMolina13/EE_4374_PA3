@@ -207,7 +207,7 @@ bool newTransaction(NetInfo *sockData)
 		numArgs = 7;
 	
 	// Create argument array
-	char args[numArgs][20];
+	char *args[numArgs];
 	
 // TESTING
 //**********************************************************************************	
