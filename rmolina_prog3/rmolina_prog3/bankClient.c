@@ -207,7 +207,7 @@ bool newTransaction(NetInfo *sockData)
 		numArgs = 7;
 	
 	// Create argument array
-	char args[numArgs][20];
+	char *args[numArgs] = malloc(20 * sizeof(char[numArgs]));
 	
 // TESTING
 //**********************************************************************************	
@@ -219,7 +219,7 @@ bool newTransaction(NetInfo *sockData)
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	// Filename
-	args[0] = {'b','a','n','k','C','l','i','e','n','t','\0'};	
+	args[0] = "bankClient";
 	argsAssigned++;
 	// IP Address
 	args[1] = sockData->cmdIP;
@@ -290,6 +290,8 @@ bool newTransaction(NetInfo *sockData)
 		free(args);
 	}
 	*/
+	
+	free(args);
 	
 	return true;
 }
