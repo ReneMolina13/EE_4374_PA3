@@ -146,16 +146,16 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) &socket);
 
 	// Wait for all threads to terminate
-	// int *threadStatuses[numThreads];
+	int *threadStatuses[numThreads];
 	for (int i = 0; i < numThreads; i++) {
-		// threadStatuses[i] = (int *) malloc(sizeof(int));
+		threadStatuses[i] = (int *) malloc(sizeof(int));
 		// pthread_join(*(tid + i), (void **) &threadStatuses[i]);
 		pthread_join(*(tid + i), NULL);
 	}
 	
 	// Free array of tid structures
 	free(tid);
-	/*
+	
 	// Check if any threads were unsuccessful with their bank transactions
 	bool transmissionError, socketClosed = false;
 	for (int i = 0; i < numThreads; i++) {
@@ -176,9 +176,6 @@ int makeThreads(int socket)
 		puts("\n\nAll threads have terminated successfully\n");
 		return 1;
 	}
-	*/
-	
-	return 1;
 }
 
 
@@ -223,6 +220,7 @@ int main(int argc, char **argv)
 
 		// Create threads that make random transactions with bank server
 		status = makeThreads(sockData.clientSocket);
+		fputs("\n", stdout);
 		if (status < 0) {
 			fputs("Unable to make original transaction (from terminal arguments) - ", stderr);
 			return -1;
