@@ -20,7 +20,7 @@ void *serverThread(void *param)
 	// Initialize bank protocol structure
 	sBANK_PROTOCOL randomRequest;
 	randomRequest.trans = rand() % 3;
-	randomRequest.acctnum = rand() % 100;
+	randomRequest.acctnum = rand() % 20;
 	randomRequest.value = rand();
 	
 	int status = makeBankRequest(clientSocket, &randomRequest);
