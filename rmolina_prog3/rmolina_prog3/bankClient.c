@@ -226,7 +226,6 @@ bool newTransaction(NetInfo *sockData)
 	args[0][index] = '\0';
 	argsAssigned++;
 	// IP Address
-	args[1] = sockData->cmdIP;
 	for (index = 0; sockData->cmdIP[index] != '\n'; index++)
 		args[1][index] = sockData->cmdIP[index];
 	args[1][index] = '\0';
@@ -260,11 +259,11 @@ bool newTransaction(NetInfo *sockData)
 		args[5][index] = '\0';
 		argsAssigned++;
 		// End of arguments list
-		args[6] = NULL;	
+		args[6][0] = '\0'
 	}
 	else if (numArgs == 6) {
 		// End of arguments list
-		args[5] = NULL;	
+		args[5][0] = '\0';	
 		argsAssigned++;
 	}
 	else {
