@@ -215,25 +215,25 @@ bool newTransaction(NetInfo *sockData)
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	// Filename
-	strncpy_s(args[0], sizeof(args[0])-1, "./bankClient", sizeof(args[0])-1);
+	strncpy(args[0], "./bankClient", sizeof(args[0])-1);
 	argsAssigned++;
 	// IP Address
-	strncpy_s(args[1], sizeof(args[1])-1, sockData->cmdIP, sizeof(args[1])-1);
+	strncpy(args[1], sockData->cmdIP, sizeof(args[1])-1);
 	argsAssigned++;
 	// Port Number
-	snprintf_s(args[2], sizeof(args[2]), "%u", sockData->cmdPort);
+	snprintf(args[2], sizeof(args[2]), "%u", sockData->cmdPort);
 	argsAssigned++;
 	// Transaction
-	memset_s(args[3], sizeof(args[3]), c, 1);
+	snprintf(args[3], sizeof(args[3]), "%c", c);
 	argsAssigned++;
 	// Account Number
 	printf("Account number: ");
-	argsAssigned += scanf_s("%s", args[4], sizeof(args[4]));
+	argsAssigned += scanf("%19s", args[4]);
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
 		// Transaction Value
 		printf("Value of the transaction in pennies: ");
-		argsAssigned += scanf_s("%s", args[5], sizeof(args[5]);
+		argsAssigned += scanf("%19s", args[5]);
 		// End of arguments list (NULL)
 		argsAssigned++;
 	}
@@ -278,7 +278,7 @@ bool newTransaction(NetInfo *sockData)
 	*/
 	
 	// Parent frees pointer memory before exiting
-	for (int i = 0; i < numArgs; i++) {			
+	for (int i = 0; i < numArgs-1; i++) {			
 		free(*(args + i));
 	}		
 	free(args);
