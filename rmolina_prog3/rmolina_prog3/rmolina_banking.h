@@ -2,6 +2,10 @@
 #define RMOLINA_BANKING_H
 
 
+// Enables bounds-checked functions to be included
+#define _STDC_WANT_LIB_EXT1	1
+
+
 #include <stdio.h>		// Standard I/O library
 #include <stdlib.h>		// Standard library: atoi(), malloc
 #include <pthread.h>	// pthreads library
