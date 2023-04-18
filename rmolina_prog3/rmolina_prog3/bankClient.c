@@ -250,7 +250,7 @@ bool newTransaction(NetInfo *sockData)
 //**********************************************************************************
 	printf("Arguments assigned: %i\n", argsAssigned);
 	for (int i = 0; i < numArgs-1; i++)
-		printf("Arg %i: %s", i, args[i]);
+		printf("Arg %i: %s\n", i, args[i]);
 //**********************************************************************************
 	
 	// Check to make sure all arguments successfully assigned
