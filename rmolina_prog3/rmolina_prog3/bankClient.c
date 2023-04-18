@@ -214,17 +214,18 @@ bool newTransaction(NetInfo *sockData)
 	// Fill command line argument array with info from user
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
+	int buffSize = 20;
 	// Argument 0: Filename
-	strncpy(args[0], "bankClient", sizeof(args[0])-1);
+	strncpy(args[0], "./bankClient", buffSize-1);
 	argsAssigned++;
 	// Argument 1: IP Address
-	strncpy(args[1], sockData->cmdIP, sizeof(args[1])-1);
+	strncpy(args[1], sockData->cmdIP, buffSize-1);
 	argsAssigned++;
 	// Argument 2: Port Number
-	snprintf(args[2], sizeof(args[2]), "%u", sockData->cmdPort);
+	snprintf(args[2], buffSize, "%u", sockData->cmdPort);
 	argsAssigned++;
 	// Argument 3: Transaction
-	snprintf(args[3], sizeof(args[3]), "%c", c);
+	snprintf(args[3], buffSize, "%c", c);
 	argsAssigned++;
 	// Argument 4: Account Number
 	printf("Account number: ");
@@ -274,7 +275,7 @@ bool newTransaction(NetInfo *sockData)
 //**********************************************************************************		
 
 		// execvp(args[0], args);
-		execv("./bankClient", args);	
+		execv(args[0], args);	
 	}
 	
 	// Parent frees pointer memory before exiting
