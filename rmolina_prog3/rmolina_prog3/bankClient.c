@@ -1,18 +1,12 @@
 #include "bankClient.h"
 
 
-// TESTING
-//**********************************************************************************
 int activeThreads = 0;
-//**********************************************************************************
 
 
 void *serverThread(void *param)
 {
-// TESTING
-//**********************************************************************************
 	printf("%i ", ++activeThreads);
-//**********************************************************************************
 
 	int *parameter = (int *) param;
 	int clientSocket = *parameter;
@@ -125,10 +119,7 @@ int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 
 int makeThreads(int socket)
 {
-// TESTING
-//**********************************************************************************
 	puts("Creating a random number of threads to make random bank transactions");
-//**********************************************************************************
 	
 	// Create between 0 and 100 threads to make random bank server requests
 	srand(time(NULL));
@@ -136,11 +127,8 @@ int makeThreads(int socket)
 	tid = (pthread_t *) malloc(numThreads * sizeof(pthread_t));
 	pthread_attr_init(&attr);
 	
-// TESTING
-//**********************************************************************************
 	printf("%i threads will be created\n\n", numThreads);
 	fputs("Thread Count: ", stdout);
-//**********************************************************************************
 
 	// Create the chosen number of threads
 	int socketStatus[numThreads][2];
@@ -262,10 +250,7 @@ bool newTransaction(NetInfo *sockData)
 	// Child process: Arguments are new transaction specified by user
 	else if (pid == 0) {
 		
-// TESTING	
-//**********************************************************************************
 		puts("\nChild process executing");
-//**********************************************************************************		
 
 		// execvp(args[0], args);
 		execv(args[0], args);	
@@ -304,11 +289,8 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
-// TESTING
-//**********************************************************************************
 	puts("Connected to bank server: ");
 	puts("Making original transaction\n");
-//**********************************************************************************
 	
 	// Status of bank transaction
 	int status;
@@ -344,11 +326,8 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
-// TESTING
-//**********************************************************************************
 	puts("Successfully closed socket\n");
 	puts("Asking user for new transaction:");
-//**********************************************************************************
 
 	// Ask user for next bank server transaction
 	if (newTransaction(&sockData) == false) {
@@ -356,10 +335,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
-// TESTING
-//**********************************************************************************
 	puts("Parent process terminating");
-//**********************************************************************************	
 	
 	// End parent process
 	return 0;
