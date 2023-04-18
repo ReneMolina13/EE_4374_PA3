@@ -286,7 +286,7 @@ bool newTransaction(NetInfo *sockData)
 
 int main(int argc, char **argv)
 {	
-	puts("\n************************************************\n");
+	puts("\n*************************************************************************************\n");
 
 	// Input structures
 	NetInfo sockData;	// Holds TCP Connection information
