@@ -245,24 +245,22 @@ bool newTransaction(NetInfo *sockData)
 	// Account Number
 	char temp3[20];
 	printf("Account number: ");
-	scanf("%20s", temp3);
+	argsAssigned += scanf("%20s", temp3);
 	for (index = 0; temp3[index] != '\0'; index++)
 		args[4][index] = temp3[index];
 	args[4][index] = '\0';
-	argsAssigned++;
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
 		// Transaction Value
 		char temp4[20];
 		printf("Value of the transaction in pennies: ");
-		scanf("%20s", temp4);
+		argsAssigned += scanf("%20s", temp4);
 		for (index = 0; temp4[index] != '\0'; index++)
 			args[5][index] = temp4[index];
 		args[5][index] = '\0';
 		argsAssigned++;
 		// End of arguments list
 		args[6] = NULL;	
-		argsAssigned ++;
 	}
 	else if (numArgs == 6) {
 		// End of arguments list
