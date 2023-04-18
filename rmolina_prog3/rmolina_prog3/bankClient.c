@@ -214,31 +214,31 @@ bool newTransaction(NetInfo *sockData)
 	// Fill command line argument array with info from user
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
-	// Filename
+	// Argument 0: Filename
 	strncpy(args[0], "./bankClient", sizeof(args[0])-1);
 	argsAssigned++;
-	// IP Address
+	// Argument 1: IP Address
 	strncpy(args[1], sockData->cmdIP, sizeof(args[1])-1);
 	argsAssigned++;
-	// Port Number
+	// Argument 2: Port Number
 	snprintf(args[2], sizeof(args[2]), "%u", sockData->cmdPort);
 	argsAssigned++;
-	// Transaction
+	// Argument 3: Transaction
 	snprintf(args[3], sizeof(args[3]), "%c", c);
 	argsAssigned++;
-	// Account Number
+	// Argument 4: Account Number
 	printf("Account number: ");
 	argsAssigned += scanf("%19s", args[4]);
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
-		// Transaction Value
+		// Argument 5: Transaction Value
 		printf("Value of the transaction in pennies: ");
 		argsAssigned += scanf("%19s", args[5]);
-		// End of arguments list (NULL)
+		// Argument 6: End of arguments list (NULL)
 		argsAssigned++;
 	}
 	else if (numArgs == 6) {
-		// End of arguments list (NULL)
+		// Argument 5: End of arguments list (NULL)
 		argsAssigned++;
 	}
 	else {
@@ -257,7 +257,6 @@ bool newTransaction(NetInfo *sockData)
 		return false;
 	}
 	
-	/*
 	// Fork process & call this program from command line
 	pid_t pid = fork();
 	if (pid < 0) {
@@ -273,9 +272,8 @@ bool newTransaction(NetInfo *sockData)
 //**********************************************************************************		
 
 		// execvp(args[0], args);
-		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45", NULL);	
+		execv("./bankClient", &args[0]);	
 	}
-	*/
 	
 	// Parent frees pointer memory before exiting
 	for (int i = 0; i < numArgs-1; i++) {			
