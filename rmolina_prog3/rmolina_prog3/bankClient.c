@@ -220,7 +220,7 @@ bool newTransaction(NetInfo *sockData)
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	int index;	// Index used for assignment of each argument
 	// Filename
-	char[] temp1 = "bankClient";
+	char temp1[] = "bankClient";
 	for (index = 0; temp1[index] != '\0'; index++)
 		args[0][index] = temp1[index];
 	args[0][index] = '\0';
@@ -232,7 +232,7 @@ bool newTransaction(NetInfo *sockData)
 	args[1][index] = '\0';
 	argsAssigned++;
 	// Port Number
-	char[20] temp2;
+	char temp2[20];
 	sprintf(temp2, "%u", sockData->cmdPort);
 	for (index = 0; temp2[index] != '\0'; index++)
 		args[2][index] = temp2[index];
@@ -243,7 +243,7 @@ bool newTransaction(NetInfo *sockData)
 	args[3][1] = '\0';
 	argsAssigned++;
 	// Account Number
-	char[20] temp3;
+	char temp3[20];
 	printf("Account number: ");
 	scanf("%20s", temp3);
 	for (index = 0; temp3[index] != '\0'; index++)
@@ -253,7 +253,7 @@ bool newTransaction(NetInfo *sockData)
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
 		// Transaction Value
-		char[20] temp4;
+		char temp4[20];
 		printf("Value of the transaction in pennies: ");
 		scanf("%20s", temp4);
 		for (index = 0; temp4[index] != '\0'; index++)
