@@ -246,13 +246,6 @@ bool newTransaction(NetInfo *sockData)
 		return false;
 	}
 	
-// TESTING	
-//**********************************************************************************
-	printf("Arguments assigned: %i\n", argsAssigned);
-	for (int i = 0; i < numArgs-1; i++)
-		printf("Arg %i: %s\n", i, args[i]);
-//**********************************************************************************
-	
 	// Check to make sure all arguments successfully assigned
 	if (argsAssigned != numArgs) {
 		fputs("Error assigning command line arguments - ", stderr);
@@ -277,11 +270,14 @@ bool newTransaction(NetInfo *sockData)
 		execv(args[0], args);	
 	}
 	
-	// Parent frees pointer memory before exiting
-	for (int i = 0; i < numArgs-1; i++) {			
+	// Parent frees pointer memory
+	for (int i = 0; i < numArgs-1; i++) {
 		free(*(args + i));
-	}		
+	}
 	free(args);
+	
+	// Wait for child before exiting
+	
 	
 	return true;
 }
@@ -289,13 +285,6 @@ bool newTransaction(NetInfo *sockData)
 
 int main(int argc, char **argv)
 {	
-// TESTING	
-//**********************************************************************************
-		puts("\n\nEntered main\n");
-		for (int i = 0; i < argc; i++)
-			printf("Argument %i: %s\n", i, argv[i]);
-//**********************************************************************************
-
 	// Input structures
 	NetInfo sockData;	// Holds TCP Connection information
 	sBANK_PROTOCOL mainRequest;	// Holds bank request info from user
