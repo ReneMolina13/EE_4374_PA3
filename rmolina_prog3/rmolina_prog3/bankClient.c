@@ -291,7 +291,7 @@ int main(int argc, char **argv)
 //**********************************************************************************
 		puts("\nEntered main\n");
 		for (int i = 0; i < argc; i++)
-			printf("Argument %i: %s", i, argv[i]);
+			printf("Argument %i: %s\n", i, argv[i]);
 //**********************************************************************************
 
 	// Input structures
