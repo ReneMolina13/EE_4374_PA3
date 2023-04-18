@@ -264,7 +264,7 @@ bool newTransaction(NetInfo *sockData)
 		
 // TESTING	
 //**********************************************************************************
-		puts("Child process executing\n");
+		puts("\nChild process executing");
 //**********************************************************************************		
 
 		// execvp(args[0], args);
