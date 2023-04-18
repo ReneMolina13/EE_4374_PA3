@@ -215,7 +215,7 @@ bool newTransaction(NetInfo *sockData)
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	// Argument 0: Filename
-	strncpy(args[0], "./bankClient", sizeof(args[0])-1);
+	strncpy(args[0], "bankClient", sizeof(args[0])-1);
 	argsAssigned++;
 	// Argument 1: IP Address
 	strncpy(args[1], sockData->cmdIP, sizeof(args[1])-1);
@@ -272,7 +272,7 @@ bool newTransaction(NetInfo *sockData)
 //**********************************************************************************		
 
 		// execvp(args[0], args);
-		execv(args[0], &args[0]);	
+		execv("./bankClient", args);	
 	}
 	
 	// Parent frees pointer memory before exiting
