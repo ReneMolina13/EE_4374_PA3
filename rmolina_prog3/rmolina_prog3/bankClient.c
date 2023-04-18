@@ -189,7 +189,7 @@ int makeThreads(int socket)
 bool newTransaction(NetInfo *sockData)
 {
 	// Ask if user wants to request another transaction
-	printf("Would you like to make another transaction? (y/n) ");
+	printf("Would you like to make another transaction? (y/n): ");
 	char c = getchar();
 	if (c != 'y' && c != 'Y')
 		return true;
