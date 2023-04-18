@@ -286,6 +286,8 @@ bool newTransaction(NetInfo *sockData)
 
 int main(int argc, char **argv)
 {	
+	puts("\n************************************************\n");
+
 	// Input structures
 	NetInfo sockData;	// Holds TCP Connection information
 	sBANK_PROTOCOL mainRequest;	// Holds bank request info from user
@@ -304,7 +306,7 @@ int main(int argc, char **argv)
 	
 // TESTING
 //**********************************************************************************
-	puts("\nConnected to bank server: ");
+	puts("Connected to bank server: ");
 	puts("Making original transaction\n");
 //**********************************************************************************
 	
