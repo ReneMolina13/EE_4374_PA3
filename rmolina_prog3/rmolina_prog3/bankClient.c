@@ -259,7 +259,7 @@ bool newTransaction(NetInfo *sockData)
 		args[5][index] = '\0';
 		argsAssigned++;
 		// End of arguments list
-		args[6][0] = '\0'
+		args[6][0] = '\0';
 	}
 	else if (numArgs == 6) {
 		// End of arguments list
