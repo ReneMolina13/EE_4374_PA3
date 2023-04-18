@@ -272,7 +272,7 @@ bool newTransaction(NetInfo *sockData)
 //**********************************************************************************		
 
 		// execvp(args[0], args);
-		execv(args[0], args);	
+		execv(args[0], &args[0]);	
 	}
 	
 	// Parent frees pointer memory before exiting
