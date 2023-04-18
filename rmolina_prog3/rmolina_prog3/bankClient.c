@@ -208,40 +208,37 @@ bool newTransaction(NetInfo *sockData)
 	
 	// Create argument array
 	char **args = (char **) malloc(numArgs * sizeof(char *));
-	
-// TESTING
-//**********************************************************************************	
-	for (int i = 0; i < numArgs; i++)
-		*(args + i) = (char *) calloc(20, sizeof(char));
-//**********************************************************************************
+	for (int i = 0; i < numArgs-1; i++)	// args[numArgs-1] is NULL
+		*(args+i) = calloc(20, sizeof(char));
 	
 	// Fill command line argument array with info from user
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	// Filename
-	// char temp1[] = "bankClient";
+	strncpy_s(args[0], sizeof(args[0])-1, "./bankClient", sizeof(args[0])-1);
 	argsAssigned++;
 	// IP Address
-	// for (index = 0; sockData->cmdIP[index] != '\n'; index++);
+	strncpy_s(args[1], sizeof(args[1])-1, sockData->cmdIP, sizeof(args[1])-1);
 	argsAssigned++;
 	// Port Number
-	// sprintf(temp2, "%u", sockData->cmdPort);
+	snprintf_s(args[2], sizeof(args[2]), "%u", sockData->cmdPort);
 	argsAssigned++;
 	// Transaction
+	memset_s(args[3], sizeof(args[3]), c, 1);
 	argsAssigned++;
 	// Account Number
-	// printf("Account number: ");
-	argsAssigned++;
+	printf("Account number: ");
+	argsAssigned += scanf_s("%s", args[4], sizeof(args[4]));
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
 		// Transaction Value
-		///printf("Value of the transaction in pennies: ");
-		argsAssigned++;
-		// End of arguments list
+		printf("Value of the transaction in pennies: ");
+		argsAssigned += scanf_s("%s", args[5], sizeof(args[5]);
+		// End of arguments list (NULL)
 		argsAssigned++;
 	}
 	else if (numArgs == 6) {
-		// End of arguments list
+		// End of arguments list (NULL)
 		argsAssigned++;
 	}
 	else {
