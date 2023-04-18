@@ -253,6 +253,7 @@ bool newTransaction(NetInfo *sockData)
 	}
 	
 	// Fork process & call this program from command line
+	int childExitStatus;
 	pid_t pid = fork();
 	if (pid < 0) {
 		fputs("Error forking process - ", stderr);
@@ -263,7 +264,7 @@ bool newTransaction(NetInfo *sockData)
 		
 // TESTING	
 //**********************************************************************************
-		puts("Fork successful\n");
+		puts("Child process executing\n");
 //**********************************************************************************		
 
 		// execvp(args[0], args);
@@ -275,9 +276,9 @@ bool newTransaction(NetInfo *sockData)
 		free(*(args + i));
 	}
 	free(args);
-	
+		
 	// Wait for child before exiting
-	
+	wait(&childExitStatus);
 	
 	return true;
 }
@@ -358,6 +359,6 @@ int main(int argc, char **argv)
 	puts("Parent process terminating\n");
 //**********************************************************************************	
 	
-	// End process without waiting for child
+	// End process
 	return 0;
 }
