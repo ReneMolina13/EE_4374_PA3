@@ -215,7 +215,7 @@ bool newTransaction(NetInfo *sockData)
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
 	// Argument 0: Filename
-	strncpy(args[0], "./bankClient", sizeof(args[0])-1);
+	strncpy(args[0], "bankClient", sizeof(args[0])-1);
 	argsAssigned++;
 	// Argument 1: IP Address
 	strncpy(args[1], sockData->cmdIP, sizeof(args[1])-1);
@@ -290,6 +290,8 @@ int main(int argc, char **argv)
 // TESTING	
 //**********************************************************************************
 		puts("\nEntered main\n");
+		for (int i = 0; i < argc; i++)
+			printf("Argument %i: %s", i, argv[i]);
 //**********************************************************************************
 
 	// Input structures
