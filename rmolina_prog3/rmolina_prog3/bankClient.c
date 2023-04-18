@@ -238,6 +238,7 @@ bool newTransaction(NetInfo *sockData)
 		///printf("Value of the transaction in pennies: ");
 		argsAssigned++;
 		// End of arguments list
+		argsAssigned++;
 	}
 	else if (numArgs == 6) {
 		// End of arguments list
