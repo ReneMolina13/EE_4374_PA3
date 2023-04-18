@@ -278,7 +278,7 @@ bool newTransaction(NetInfo *sockData)
 	free(args);
 		
 	// Wait for child before exiting
-	// wait(&childExitStatus);
+	wait(&childExitStatus);
 	
 	return true;
 }
@@ -356,9 +356,9 @@ int main(int argc, char **argv)
 	
 // TESTING
 //**********************************************************************************
-	// puts("Parent process terminating\n");
+	puts("Parent process terminating\n");
 //**********************************************************************************	
 	
-	// End parent process without waiting
+	// End parent process
 	return 0;
 }

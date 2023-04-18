@@ -10,6 +10,7 @@
 #include <time.h>		// srand function
 #include <string.h>		// memset function
 #include <stdbool.h>	// bool data type
+#include <sys/wait.h>	// for wait() function
 #include <sys/socket.h>	
 #include <arpa/inet.h>
 #include <netdb.h>
