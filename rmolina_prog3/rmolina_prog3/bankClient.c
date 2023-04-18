@@ -207,63 +207,40 @@ bool newTransaction(NetInfo *sockData)
 		numArgs = 7;
 	
 	// Create argument array
-	char args[numArgs][20];
+	char **args = (char **) malloc(numArgs * sizeof(char *));
 	
 // TESTING
 //**********************************************************************************	
-	// for (int i = 0; i < numArgs; i++)
-		// args[i] = (char *) calloc(20, sizeof(char));
+	for (int i = 0; i < numArgs; i++)
+		*(args + i) = (char *) calloc(20, sizeof(char));
 //**********************************************************************************
 	
 	// Fill command line argument array with info from user
 	
 	int argsAssigned = 0;	// Keeps track of arguments successfully assigned
-	int index;	// Index used for assignment of each argument
 	// Filename
-	char temp1[] = "bankClient";
-	for (index = 0; temp1[index] != '\0'; index++)
-		args[0][index] = temp1[index];
-	args[0][index] = '\0';
+	// char temp1[] = "bankClient";
 	argsAssigned++;
 	// IP Address
-	for (index = 0; sockData->cmdIP[index] != '\n'; index++)
-		args[1][index] = sockData->cmdIP[index];
-	args[1][index] = '\0';
+	// for (index = 0; sockData->cmdIP[index] != '\n'; index++);
 	argsAssigned++;
 	// Port Number
-	char temp2[20];
-	sprintf(temp2, "%u", sockData->cmdPort);
-	for (index = 0; temp2[index] != '\0'; index++)
-		args[2][index] = temp2[index];
-	args[2][index] = '\0';
+	// sprintf(temp2, "%u", sockData->cmdPort);
 	argsAssigned++;
 	// Transaction
-	args[3][0] = c;
-	args[3][1] = '\0';
 	argsAssigned++;
 	// Account Number
-	char temp3[20];
-	printf("Account number: ");
-	argsAssigned += scanf("%20s", temp3);
-	for (index = 0; temp3[index] != '\0'; index++)
-		args[4][index] = temp3[index];
-	args[4][index] = '\0';
+	// printf("Account number: ");
+	argsAssigned++;
 	// Check if transaction value argument is needed
 	if (numArgs == 7) {
 		// Transaction Value
-		char temp4[20];
-		printf("Value of the transaction in pennies: ");
-		argsAssigned += scanf("%20s", temp4);
-		for (index = 0; temp4[index] != '\0'; index++)
-			args[5][index] = temp4[index];
-		args[5][index] = '\0';
+		///printf("Value of the transaction in pennies: ");
 		argsAssigned++;
 		// End of arguments list
-		args[6][0] = '\0';
 	}
 	else if (numArgs == 6) {
 		// End of arguments list
-		args[5][0] = '\0';	
 		argsAssigned++;
 	}
 	else {
@@ -282,6 +259,7 @@ bool newTransaction(NetInfo *sockData)
 		return false;
 	}
 	
+	/*
 	// Fork process & call this program from command line
 	pid_t pid = fork();
 	if (pid < 0) {
@@ -299,16 +277,13 @@ bool newTransaction(NetInfo *sockData)
 		// execvp(args[0], args);
 		execlp("bankClient", "bankClient", "10.9.0.1", "B", "45", NULL);	
 	}
-	
-	/*
-	// Parent frees pointer memory before exiting
-	else if (pid > 0) {
-		for (int i = 0; i < numArgs; i++) {			
-			free(args[i]);
-		}		
-		free(args);
-	}
 	*/
+	
+	// Parent frees pointer memory before exiting
+	for (int i = 0; i < numArgs; i++) {			
+		free(*(args + i));
+	}		
+	free(args);
 	
 	return true;
 }
