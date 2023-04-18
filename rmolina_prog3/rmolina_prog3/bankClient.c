@@ -358,7 +358,7 @@ int main(int argc, char **argv)
 	
 // TESTING
 //**********************************************************************************
-	puts("\nParent process terminating");
+	puts("Parent process terminating");
 //**********************************************************************************	
 	
 	// End parent process
