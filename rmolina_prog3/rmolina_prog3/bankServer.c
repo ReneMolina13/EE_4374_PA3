@@ -24,7 +24,7 @@ void *clientThread(void *param)
 	int errorCode = parameter->errorCode;
 	
 	// Run forever (assuming no errors)
-	while (1) {
+	while (errorCode >= 0) {
 		// Accept client connection
 		char clientName[INET_ADDRSTRLEN];
 		struct sockaddr_in clientAddr;
@@ -62,11 +62,7 @@ void *clientThread(void *param)
 			if (close(clientSocket) < 0) {
 				puts("Close Error");
 				errorCode = CLOSE_ERROR;
-				break;
 			}
-		// Transmission Error
-		else
-			break;
 	
 		// puts("Successfully closed client socket");
 		// puts("\n************************************************\n");
