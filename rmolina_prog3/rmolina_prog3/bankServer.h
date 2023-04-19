@@ -22,6 +22,10 @@
 
 // Number of bank accounts
 #define NUM_ACCTS 100
+// Error codes for threads
+#define ACCEPT_ERROR		-1
+#define TRANSMISSION_ERROR	-2
+#define CLOSE_ERROR			-3
 
 
 // Server-side banking information
@@ -31,11 +35,21 @@ typedef struct
 	pthread_mutex_t mutex;
 } sBANK_ACCT_DATA;
 
+// Structure holding thread arguments
+typedef struct
+{
+	pthread_t tid
+	int serverSocket;
+	int errorCode;
+} ThreadArgs;
+
 
 //*******************************************************************************************
 // Function Prototypes
 //*******************************************************************************************
 
+
+void *clientThread(void *);
 
 /*
 	initBank function: 
@@ -99,5 +113,10 @@ bool processTransaction();
 // Array of bank accounts
 sBANK_ACCT_DATA acctData[NUM_ACCTS];
 
+// Attribute structure for threads
+pthread_attr_t attr;
+
+// Array of thread structures
+ThreadArgs args[NUM_ACCTS];
 
 #endif
