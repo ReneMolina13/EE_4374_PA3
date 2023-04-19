@@ -310,8 +310,8 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
-	puts("Connected to bank server: ");
-	puts("Making original transaction\n");
+	puts("Connected to bank server\n");
+	puts("Making original transaction:");
 	printf("Transaction type (D=0, W=1, I=2): %i\n", mainRequest.trans);
 	printf("Account number: %i\n", mainRequest.acctnum);
 	printf("Value of transaction: %i\n\n", mainRequest.value);
@@ -327,7 +327,7 @@ int main(int argc, char **argv)
 		puts("Socket in close-wait state: Initiating close handshake");
 	}
 	else {
-		puts("Original transaction completed\n");
+		puts("Original transaction completed:");
 		printf("Transaction type (D=0, W=1, I=2): %i\n", mainRequest.trans);
 		printf("Account number: %i\n", mainRequest.acctnum);
 		printf("Value of transaction: %i\n\n", mainRequest.value);
