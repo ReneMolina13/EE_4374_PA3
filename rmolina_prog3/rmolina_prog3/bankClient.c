@@ -1,3 +1,24 @@
+/*
+	Rene Molina
+	EE 4374 - Operating Systems
+	Due Date: 4/12/2023
+	Assigned: 3/27/2023
+	
+	This program creates a client TCP socket which connects to the bank server 
+	at the IP address and port number (26207) provided by the user. Also included 
+	in the command line arguments are the transaction type, bank account number, 
+	and value of transaction (in pennies). The client socket connects to the bank 
+	server and completes the desired transaction. After this, a random number 
+	between 0 and 100 threads are created which each simultaneouslly make random, 
+	valid transactions with the bank server. Finally, the program asks the user 
+	if they want to make another transaction. If so, the user enters the transaction 
+	info on the console (IP address and port number remain unchanged), and a new
+	process of the bank client gets created with the entered info as the command
+	line arguments. This continues until the user no longer wants to make another
+	transaction, at which point all of the created processes terminate.
+*/
+
+
 #include "bankClient.h"
 
 

@@ -1,3 +1,17 @@
+/*
+	Rene Molina
+	EE 4374 - Operating Systems
+	Due Date: 4/12/2023
+	Assigned: 3/27/2023
+	
+	This program creates a bank server which allows clients to perform 
+	deposit, withdraw, and bank inquiry operations. Once the operation 
+	has been completed, the client is given a receipt of the transaction. 
+	Note that each time the bank server program is run, each of the 100 
+	bank accounts are set to contain random amounts of money.
+*/
+
+
 #include "bankServer.h"
 
 

@@ -1,3 +1,16 @@
+/*
+	Rene Molina
+	EE 4374 - Operating Systems
+	Due Date: 4/12/2023
+	Assigned: 3/27/2023
+	
+	This is the header file which contains information used by both the client
+	and server programs. This includes the header files described below, the 
+	macros for bank transactions, and the structure containing the client-side
+	banking protocol (sBANK_PROTOCOL). 
+*/
+
+
 #ifndef RMOLINA_BANKING_H
 #define RMOLINA_BANKING_H
 
