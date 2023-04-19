@@ -38,7 +38,7 @@ typedef struct
 // Structure holding thread arguments
 typedef struct
 {
-	pthread_t tid
+	pthread_t tid;
 	int serverSocket;
 	int errorCode;
 } ThreadArgs;
