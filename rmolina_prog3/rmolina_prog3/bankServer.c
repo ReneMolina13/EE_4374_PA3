@@ -15,7 +15,6 @@
 #include "bankServer.h"
 
 
-// Initialize bank server
 int initBank(struct sockaddr_in *serverAddr)
 {
 	// Initialize bank accounts
@@ -70,7 +69,6 @@ int initBank(struct sockaddr_in *serverAddr)
 }
 
 
-// Handle Client
 int handleClient(int clientSocket)
 {
 	static int transactionNum = 0;
@@ -128,7 +126,6 @@ int handleClient(int clientSocket)
 }
 
 
-// Processes transction requested by client
 bool processTransaction(sBANK_PROTOCOL *request)
 {	
 	// Checks for a valid account number
