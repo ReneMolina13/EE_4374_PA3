@@ -263,7 +263,7 @@ int main()
 	
 	// Wait for threads to return (indicates error)
 	for (int i = 0; i < NUM_ACCTS; i++) {
-		pthread_join(args[i].tid);
+		pthread_join(args[i].tid, NULL);
 		switch(args[i].errorCode) {
 		case ACCEPT_ERROR:
 			fputs("Unable to accept client connection - ", stderr);
