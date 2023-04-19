@@ -52,13 +52,13 @@ void *clientThread(void *param)
 				break;
 			}
 			else if (status == 0) {
-				// puts("Socket in close-wait state: Initiating close handshake");
+				puts("Socket in close-wait state: Initiating close handshake");
 				break;
 			}
 		}
 		
+		// Client closed socket
 		if (errorCode >= 0)
-			// Close client socket
 			if (close(clientSocket) < 0) {
 				errorCode = CLOSE_ERROR;
 				break;
@@ -71,6 +71,7 @@ void *clientThread(void *param)
 		// puts("\n************************************************\n");
 	}
 	
+	/*
 	// Error has occured: kill all other threads and exit
 	int i;
 	for (i = 0; args[i].tid != tid; i++)
@@ -79,6 +80,7 @@ void *clientThread(void *param)
 		pthread_kill(args[i].tid, SIGKILL);
 	parameter->errorCode = errorCode;
 	pthread_exit(0);
+	*/
 }
 
 
