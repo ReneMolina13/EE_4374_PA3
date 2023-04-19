@@ -132,15 +132,8 @@ int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 	// Indicates that the server has closed the socket
 	else if (bytesReceived == 0)
 		return 0;
-	// Successful transaction - print receipt
-	else {
-		puts("Receipt from bank server: ");
-		printf("Transaction type (D=0, W=1, I=2): %i\n", bankTransaction->trans);
-		printf("Account number: %i\n", bankTransaction->acctnum);
-		printf("Value of transaction: %i\n\n", bankTransaction->value);
-
-	}
 	
+	// Transaction successful
 	return 1;
 }
 
