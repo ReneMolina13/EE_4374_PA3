@@ -7,7 +7,7 @@
 	This is the header file which contains information used by both the client
 	and server programs. This includes the header files described below, the 
 	macros for bank transactions, and the structure containing the client-side
-	banking protocol (sBANK_PROTOCOL). 
+	banking protocol (sBANK_PROTOCOL)
 */
 
 

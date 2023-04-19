@@ -8,7 +8,7 @@
 	deposit, withdraw, and bank inquiry operations. Once the operation 
 	has been completed, the client is given a receipt of the transaction. 
 	Note that each time the bank server program is run, each of the 100 
-	bank accounts are set to contain random amounts of money.
+	bank accounts are set to contain random amounts of money
 */
 
 

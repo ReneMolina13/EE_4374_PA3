@@ -9,13 +9,13 @@
 	in the command line arguments are the transaction type, bank account number, 
 	and value of transaction (in pennies). The client socket connects to the bank 
 	server and completes the desired transaction. After this, a random number 
-	between 0 and 100 threads are created which each simultaneouslly make random, 
+	between 0 and 100 threads are created which each simultaneously make random, 
 	valid transactions with the bank server. Finally, the program asks the user 
 	if they want to make another transaction. If so, the user enters the transaction 
 	info on the console (IP address and port number remain unchanged), and a new
 	process of the bank client gets created with the entered info as the command
 	line arguments. This continues until the user no longer wants to make another
-	transaction, at which point all of the created processes terminate.
+	transaction, at which point all of the created processes terminate
 */
 
 
@@ -36,7 +36,7 @@ void *serverThread(void *param)
 	// Initialize bank protocol structure
 	sBANK_PROTOCOL randomRequest;
 	randomRequest.trans = rand() % 3;
-	randomRequest.acctnum = rand() % 20;
+	randomRequest.acctnum = rand() % 100;
 	randomRequest.value = rand();
 	
 	clientStatus = makeBankRequest(clientSocket, &randomRequest);
@@ -159,9 +159,9 @@ int makeThreads(int socket)
 		pthread_create(tid+i, &attr, serverThread, (void *) socketStatus[i]);
 	}
 	int threadStatus[numThreads];
+	
 	// Wait for all threads to terminate
 	for (int i = 0; i < numThreads; i++) {
-		// Pass a thread status to each thread (to act as a return value)
 		pthread_join(*(tid + i), NULL);
 		threadStatus[i] = socketStatus[i][1];
 	}
