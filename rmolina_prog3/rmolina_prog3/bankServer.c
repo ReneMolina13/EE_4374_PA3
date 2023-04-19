@@ -36,12 +36,12 @@ void *clientThread(void *param)
 		}
 		inet_ntop(AF_INET, &clientAddr.sin_addr.s_addr, clientName, sizeof(clientName));
 			
-		// puts("Server accepted connection request:");
-		// printf("Client socket value: %i\n", clientSocket);
-		// printf("Client family value: %i\n", clientAddr.sin_family);
-		// printf("Client IP value: %s\n", clientName);
-		// printf("Client port value: %i\n", ntohs(clientAddr.sin_port));
-		// puts("\n************************************************\n");
+		puts("Server accepted connection request:");
+		printf("Client socket value: %i\n", clientSocket);
+		printf("Client family value: %i\n", clientAddr.sin_family);
+		printf("Client IP value: %s\n", clientName);
+		printf("Client port value: %i\n", ntohs(clientAddr.sin_port));
+		puts("\n************************************************\n");
 		
 		// Handle requests until client ends connection
 		int status;
