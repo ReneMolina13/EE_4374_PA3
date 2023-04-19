@@ -117,7 +117,6 @@ bool connectToServer(NetInfo *sockData)
 int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 {
 	// Send the requested transaction to the server
-	
 	ssize_t bytesSent;
 	bytesSent = send(clientSocket, bankTransaction, sizeof(sBANK_PROTOCOL), 0);
 	// Indicates transmission error
@@ -133,6 +132,14 @@ int makeBankRequest(int clientSocket, sBANK_PROTOCOL *bankTransaction)
 	// Indicates that the server has closed the socket
 	else if (bytesReceived == 0)
 		return 0;
+	// Successful transaction - print receipt
+	else {
+		puts("Receipt from bank server: ");
+		printf("Transaction type (D=0, W=1, I=2): %i\n", bankTransaction->trans);
+		printf("Account number: %i\n", bankTransaction->acctnum);
+		printf("Value of transaction: %i\n\n", bankTransaction->value);
+
+	}
 	
 	return 1;
 }
@@ -312,12 +319,14 @@ int main(int argc, char **argv)
 	
 	puts("Connected to bank server: ");
 	puts("Making original transaction\n");
-	
-	// Status of bank transaction
-	int status;
+	puts("Receipt from bank server: ");
+	printf("Transaction type (D=0, W=1, I=2): %i\n", mainRequest.trans);
+	printf("Account number: %i\n", mainRequest.acctnum);
+	printf("Value of transaction: %i\n\n", mainRequest.value);
+
 	
 	// Make the transaction specified by the terminal arguments
-	status = makeBankRequest(sockData.clientSocket, &mainRequest);
+	int status = makeBankRequest(sockData.clientSocket, &mainRequest);
 	if (status < 0) {
 		fputs("Original transaction failed due to transmission error - ", stderr);
 		return -1;
@@ -327,6 +336,10 @@ int main(int argc, char **argv)
 	}
 	else {
 		puts("Original transaction completed\n");
+		printf("Transaction type (D=0, W=1, I=2): %i\n", mainRequest.trans);
+		printf("Account number: %i\n", mainRequest.acctnum);
+		printf("Value of transaction: %i\n\n", mainRequest.value);
+
 
 		// Create threads that make random transactions with bank server
 		status = makeThreads(sockData.clientSocket);
