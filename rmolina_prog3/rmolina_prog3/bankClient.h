@@ -48,12 +48,16 @@ typedef struct
 	
 	Inputs:
 	- void *param: Holds the address of an integer array of size 2 containing the handle to
-			the connected socket (input) and the status of the transaction (output). Socket
-			handle is used to send the randomly-generated bank request to the server
+			the connected socket (input) and the status of the transaction (output)
+	- int clientSocket: Socket handle is used to send the randomly-generated bank request 
+			to the server
 	
 	Outputs:
-	- void *param: The value of the transaction status is -1 if there were transmission errors, 0
-			if the server closed the socket, and 1 if the transaction was successful
+	- void *retVal: Nothing is returned from void * return value. Actual value 
+			returned is 2nd integer in argument array (clientStatus)
+	- int clientStatus: The value of the transaction status is -1 if there were 
+			transmission errors, 0 if the server closed the socket, and 1 if the 
+			transaction was successful
 */
 void *serverThread(void *);
 
