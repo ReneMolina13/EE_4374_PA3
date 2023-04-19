@@ -335,7 +335,6 @@ int main(int argc, char **argv)
 
 		// Create threads that make random transactions with bank server
 		status = makeThreads(sockData.clientSocket);
-		fputs("\n", stdout);
 		if (status < 0) {
 			fputs("Thread transaction(s) failed due to transmission error - ", stderr);
 			return -1;
