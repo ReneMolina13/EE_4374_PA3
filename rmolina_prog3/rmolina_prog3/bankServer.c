@@ -18,7 +18,7 @@
 void *clientThread(void *param)
 {
 	// Extract input arguments
-	ThreadArgs *parameter = (ThreadArgs *) param
+	ThreadArgs *parameter = (ThreadArgs *) param;
 	pthread_t tid = parameter->tid;
 	int serverSocket = parameter->serverSocket;
 	int errorCode = parameter->errorCode;
