@@ -59,7 +59,7 @@ void *clientThread(void *param)
 		
 		// Client closed socket
 		if (errorCode >= 0)
-			if (close(clientSocket) < 0) {
+			if (close(clientSocket) < 0)
 				errorCode = CLOSE_ERROR;
 	
 		puts("Successfully closed client socket");
