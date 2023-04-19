@@ -60,15 +60,12 @@ void *clientThread(void *param)
 		// Client closed socket
 		if (errorCode >= 0)
 			if (close(clientSocket) < 0) {
-				puts("Close Error");
 				errorCode = CLOSE_ERROR;
-			}
 	
-		// puts("Successfully closed client socket");
-		// puts("\n************************************************\n");
+		puts("Successfully closed client socket");
+		puts("\n************************************************\n");
 	}
 	
-	/*
 	// Error has occured: kill all other threads and exit
 	int i;
 	for (i = 0; args[i].tid != tid; i++)
@@ -77,7 +74,6 @@ void *clientThread(void *param)
 		pthread_kill(args[i].tid, SIGKILL);
 	parameter->errorCode = errorCode;
 	pthread_exit(0);
-	*/
 }
 
 
