@@ -14,7 +14,7 @@ bankServer.o: bankServer.h rmolina_banking.h
 
 # compilation instruction ($@ = target, $^ = prerequisites)
 bankClient: $(CLTOBJ)
-	cc -o bankClient $(CFLAGS) $(CLTOBJ) -lpthread
+	cc -o bankClient $(CFLAGS) $(CLTOBJ)
 
 bankServer: $(SRVOBJ)
 	cc -o bankServer $(CFLAGS) $(SRVOBJ) -lpthread
